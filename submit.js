@@ -117,6 +117,7 @@
     if (source === null) { setError("source-error", "Ce lien n'a pas l'air utilisable. Mets une adresse https, ou laisse vide."); ok = false; }
     else setError("source-error", "");
 
+    // shortcut: the 5 MB limit is browser-only, add a server upload endpoint for strict enforcement.
     if (imageFile && !["image/jpeg", "image/png", "image/webp"].includes(imageFile.type)) {
       setError("image-error", "Choisis un fichier JPG, PNG ou WebP."); ok = false;
     } else if (imageFile && (!imageFile.size || imageFile.size > 5 * 1024 * 1024)) {

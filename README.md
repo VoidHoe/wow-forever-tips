@@ -55,7 +55,7 @@ Tape `yes` dans la colonne **Approved** (actuellement colonne I). `y`, `true`, `
 Le champ **Image** du Google Form est un champ texte pour une URL. Le site peut envoyer un fichier depuis l'appareil vers Cloudinary, puis placer l'URL obtenue dans ce champ. Pour l'activer :
 
 1. Publie un CSV contenant **uniquement les lignes approuvées**, puis remplace `csvUrl` dans `community.js`. Le CSV actuel publie aussi les astuces en attente, leurs noms et leurs URL d'image. Garde l'onglet des réponses brut privé et ne publie que l'onglet filtré.
-2. Crée un compte Cloudinary et un **unsigned upload preset** limité aux images JPG, PNG et WebP, 5 Mo maximum.
+2. Crée un compte Cloudinary et un **unsigned upload preset** qui accepte uniquement JPG, PNG et WebP. Cloudinary ne permet pas de limite de taille par preset ; le formulaire du site vérifie les 5 Mo dans le navigateur. Si une limite stricte côté serveur devient nécessaire, il faudra un endpoint d'envoi côté serveur.
 3. Renseigne `imageUpload.cloudName` et `imageUpload.uploadPreset` dans `community.js`. Ces deux valeurs sont publiques ; ne mets jamais de clé secrète dans le site. Le choix de fichier reste masqué tant qu'elles sont vides.
 
 L'image est hébergée publiquement dès son téléversement, avant l'approbation de l'astuce. Une image envoyée sans astuce approuvée restera sur Cloudinary jusqu'à sa suppression manuelle.
