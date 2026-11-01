@@ -10,6 +10,8 @@
   var titleInput = document.getElementById("title");
   var detailsInput = document.getElementById("details");
   var sourceInput = document.getElementById("source");
+  var imageInput = document.getElementById("image");
+  if (!C.imageUpload.cloudName || !C.imageUpload.uploadPreset) imageInput.parentNode.hidden = true;
   var nameInput = document.getElementById("name");
   var sending = false;
 
@@ -62,6 +64,7 @@
   titleInput.addEventListener("input", function () { updateCount(); setError("title-error", ""); });
   detailsInput.addEventListener("input", function () { setError("details-error", ""); });
   sourceInput.addEventListener("input", function () { setError("source-error", ""); });
+  imageInput.addEventListener("change", function () { setError("image-error", ""); });
   choices.addEventListener("change", function () { setError("cat-error", ""); });
   updateCount();
 
@@ -98,6 +101,7 @@
     var details = detailsInput.value.trim();
     var cat = selectedCategory();
     var source = looseUrl(sourceInput.value);
+    var imageFile = imageInput.files[0];
     var ok = true;
 
     if (!title) { setError("title-error", "Ajoute un titre court."); ok = false; }
@@ -113,26 +117,34 @@
     if (source === null) { setError("source-error", "Ce lien n'a pas l'air utilisable. Mets une adresse https, ou laisse vide."); ok = false; }
     else setError("source-error", "");
 
+    // shortcut: the 5 MB limit is browser-only, add a server upload endpoint for strict enforcement.
+    if (imageFile && !["image/jpeg", "image/png", "image/webp"].includes(imageFile.type)) {
+      setError("image-error", "Choisis un fichier JPG, PNG ou WebP."); ok = false;
+    } else if (imageFile && (!imageFile.size || imageFile.size > 5 * 1024 * 1024)) {
+      setError("image-error", "Choisis une image de 5 Mo ou moins."); ok = false;
+    } else setError("image-error", "");
+
     return ok ? {
       title: title,
       categoryLabel: cat.label,
       details: details,
       source: source,
+      imageFile: imageFile,
       name: nameInput.value.trim()
     } : null;
   }
 
-  function showError() {
+  function showError(uploadFailed) {
     var box = document.getElementById("form-error");
     box.hidden = false;
     box.textContent = "";
-    box.appendChild(document.createTextNode("L'envoi a planté. "));
+    box.appendChild(document.createTextNode(uploadFailed ? "L'image n'a pas pu être envoyée. Réessaie. " : "L'envoi a planté. "));
     var link = el("a", null, "Ouvre le formulaire Google");
     link.href = C.formView;
     link.target = "_blank";
     link.rel = "noopener noreferrer";
     box.appendChild(link);
-    box.appendChild(document.createTextNode(" et réessaie là-bas."));
+    box.appendChild(document.createTextNode(" pour envoyer l'astuce sans image."));
   }
 
   function showSuccess() {
@@ -150,13 +162,19 @@
     if (!fields) return;
     sending = true;
     sendBtn.disabled = true;
-    sendBtn.textContent = "Envoi…";
+    sendBtn.textContent = fields.imageFile ? "Téléversement…" : "Envoi…";
     document.getElementById("form-error").hidden = true;
     rememberName();
-    C.submitTip(fields).then(function () {
+    var uploadFailed = !!fields.imageFile;
+    (fields.imageFile ? C.uploadImage(fields.imageFile) : Promise.resolve("")).then(function (url) {
+      fields.image = url;
+      uploadFailed = false;
+      sendBtn.textContent = "Envoi…";
+      return C.submitTip(fields);
+    }).then(function () {
       showSuccess();
     }).catch(function () {
-      showError();
+      showError(uploadFailed);
     }).then(function () {
       sending = false;
       sendBtn.disabled = false;
@@ -168,11 +186,13 @@
     titleInput.value = "";
     detailsInput.value = "";
     sourceInput.value = "";
+    imageInput.value = "";
     updateCount();
     setError("title-error", "");
     setError("cat-error", "");
     setError("details-error", "");
     setError("source-error", "");
+    setError("image-error", "");
     success.hidden = true;
     form.hidden = false;
     titleInput.focus();

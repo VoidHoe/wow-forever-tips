@@ -25,8 +25,12 @@
     category: "entry.829806976",
     details: "entry.1557623342",
     source: "entry.465615384",
-    name: "entry.1699823806"
+    name: "entry.1699823806",
+    image: "entry.1827524123"
   };
+
+  // shortcut: an exposed unsigned preset can be abused, add a server upload endpoint if abuse appears.
+  var imageUpload = { cloudName: "xj5obs3e", uploadPreset: "wowforevertips" };
 
   function categoryById(id) {
     for (var i = 0; i < categories.length; i++) {
@@ -89,6 +93,7 @@
       details: find("details"),
       source: find("source link"),
       name: find("your name"),
+      image: find("image"),
       approved: find("approved")
     };
   }
@@ -171,6 +176,7 @@
       if (!title || !details || !cat) continue;
       var by = cell(row, cols.name);
       var url = safeHttpUrl(cell(row, cols.source));
+      var image = safeHttpUrl(cell(row, cols.image));
       var id = uniqueId("c-" + slug(title) + "-" + hash(title + "\n" + details + "\n" + cell(row, 0)), seen);
       var tip = {
         id: id,
@@ -182,6 +188,7 @@
       };
       if (by) tip.by = by;
       if (url) tip.source = sourceFromUrl(url);
+      if (image && image.slice(0, 8) === "https://") tip.image = image;
       out.push(tip);
     }
     return out;
@@ -194,6 +201,7 @@
     body.set(entries.details, fields.details);
     if (fields.source) body.set(entries.source, fields.source);
     if (fields.name) body.set(entries.name, fields.name);
+    if (fields.image) body.set(entries.image, fields.image);
     var fetcher = fetchFn || root.fetch;
     return fetcher(FORM_BASE + "/formResponse", {
       method: "POST",
@@ -202,18 +210,38 @@
     });
   }
 
+  function uploadImage(file, fetchFn) {
+    if (!imageUpload.cloudName || !imageUpload.uploadPreset) return Promise.reject(new Error("Image upload is not configured"));
+    var body = new FormData();
+    body.set("file", file);
+    body.set("upload_preset", imageUpload.uploadPreset);
+    return (fetchFn || root.fetch)("https://api.cloudinary.com/v1_1/" + encodeURIComponent(imageUpload.cloudName) + "/image/upload", {
+      method: "POST",
+      body: body
+    }).then(function (res) {
+      if (!res.ok) throw new Error("Image upload failed");
+      return res.json();
+    }).then(function (data) {
+      var url = safeHttpUrl(data && data.secure_url);
+      if (!url || url.indexOf("https://res.cloudinary.com/" + imageUpload.cloudName + "/image/upload/") !== 0) throw new Error("Invalid image URL");
+      return url;
+    });
+  }
+
   root.COMMUNITY = {
     categories: categories,
     entries: entries,
+    imageUpload: imageUpload,
     formView: FORM_BASE + "/viewform",
     formResponse: FORM_BASE + "/formResponse",
-    csvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQwkjMPOnMWkdVyg6Rz1fQ6weZaTTDUMq6S-nuwNrBRRB_wi8iVoZaKSin_LDv4cwNLgE9C0oD1DLVA/pub?gid=278733250&single=true&output=csv",
+    csvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQwkjMPOnMWkdVyg6Rz1fQ6weZaTTDUMq6S-nuwNrBRRB_wi8iVoZaKSin_LDv4cwNLgE9C0oD1DLVA/pub?gid=1603425361&single=true&output=csv",
     sheetUrl: "https://docs.google.com/spreadsheets/d/1_pIif9WGzURLXSXnn9RDIVFEu5mqf0xbpvuo8Ijq_ic/edit",
     categoryById: categoryById,
     categoryByLabel: categoryByLabel,
     parseCsv: parseCsv,
     rowsToTips: rowsToTips,
     submitTip: submitTip,
+    uploadImage: uploadImage,
     safeHttpUrl: safeHttpUrl,
     isApproved: isApproved
   };
