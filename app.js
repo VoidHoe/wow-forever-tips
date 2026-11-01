@@ -30,7 +30,7 @@
     if (state.cat !== "all" && t.cat !== state.cat) return false;
     if (state.must && !t.must) return false;
     if (!state.q) return true;
-    var hay = (t.title + " " + t.text + " " + (t.source && t.source.name || "") + " " + (cats[t.cat] ? cats[t.cat].label : "")).toLowerCase();
+    var hay = (t.title + " " + t.text + " " + (t.source && t.source.name || "") + " " + (t.more || []).map(function (x) { return x.name || ""; }).join(" ") + " " + (cats[t.cat] ? cats[t.cat].label : "")).toLowerCase();
     return state.q.split(/\s+/).every(function (w) { return hay.indexOf(w) !== -1; });
   }
 
@@ -62,12 +62,13 @@
     if (t.must) m.appendChild(el("span", "badge mustb", "Must know"));
     if (t.badge === "beta") m.appendChild(el("span", "badge beta", "Beta"));
     if (t.badge === "classic") m.appendChild(el("span", "badge classic", "Classic-era"));
-    if (t.source && t.source.url) {
-      var a = el("a", "src"); a.href = t.source.url; a.target = "_blank"; a.rel = "noopener noreferrer";
-      a.appendChild(el("span", "stype " + t.source.type, t.source.type));
-      a.appendChild(document.createTextNode(t.source.name || t.source.url));
+    [t.source].concat(t.more || []).forEach(function (src) {
+      if (!src || !src.url) return;
+      var a = el("a", "src"); a.href = src.url; a.target = "_blank"; a.rel = "noopener noreferrer";
+      a.appendChild(el("span", "stype " + src.type, src.type));
+      a.appendChild(document.createTextNode(src.name || src.url));
       m.appendChild(a);
-    }
+    });
     c.appendChild(m);
     return c;
   }

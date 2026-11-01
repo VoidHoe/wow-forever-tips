@@ -26,7 +26,9 @@ Open `tips.js`, copy any `{ ... }` block in `window.TIPS`, paste it, and edit:
   source: { url: "https://...", type: "Reddit", name: "r/wowforever – thread title" },
                                  // type: Reddit | YouTube | X | Guide | Blizzard | Forum
   badge: "beta",                 // optional: "beta" (may change) or "classic" (Classic-era wisdom)
-  must: true                     // optional: shows the ★ Must know star
+  must: true,                    // optional: shows the ★ Must know star
+  more: [ { url: "https://...", type: "YouTube", name: "Another source" } ]
+                                 // optional: extra sources for a tip that several places mention
 },
 ```
 
