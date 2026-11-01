@@ -1,7 +1,8 @@
 /*
   Shared submit + approval config.
-  Category labels here are the exact Google Form choice strings.
-  They match window.CATEGORIES[].label in tips.js.
+  Category labels here are the EXACT Google Form choice strings.
+  They must stay in English: the sheet and the form are English.
+  French display names live on window.CATEGORIES in tips.js.
 */
 (function (root) {
   "use strict";

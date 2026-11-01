@@ -1,31 +1,31 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#110f0c">
-<title>WoW Forever – Leveling Tips for the First Run</title>
-<meta name="description" content="Community-sourced WoW Forever leveling tips: settings, classes, routes, professions, dungeons, addons and mistakes to avoid.">
+<title>WoW Forever – Astuces de level pour la première run</title>
+<meta name="description" content="Astuces de level WoW Forever : réglages, classes, routes, métiers, donjons, addons et erreurs à éviter.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23110f0c'/%3E%3Cpath d='M8 2.2l1.5 3.2 3.5.5-2.5 2.4.6 3.5L8 10.4 4.9 12l.6-3.5L3 6l3.5-.5z' fill='%23e2b15a'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<a class="skip" href="#tips">Skip to tips</a>
+<a class="skip" href="#tips">Aller aux astuces</a>
 
 <header class="hero">
   <div class="hero-inner">
     <div class="brand">
-      <p class="eyebrow">Field guide for the first run</p>
-      <h1>WoW Forever <span>Tips</span></h1>
-      <p class="sub">One line each. Open a tip only when you need the detail.</p>
-      <p class="hero-actions"><a class="btn" href="submit.html">Submit a tip</a></p>
+      <p class="eyebrow">Le carnet de la première run</p>
+      <h1>Astuces <span>WoW Forever</span></h1>
+      <p class="sub">Une ligne chacune. Ouvre l'astuce seulement si tu veux le détail.</p>
+      <p class="hero-actions"><a class="btn" href="submit.html">Proposer une astuce</a></p>
     </div>
     <div class="countdown" id="countdown" aria-live="polite">
-      <div class="cd-label">Servers open <strong id="launch-local"></strong></div>
-      <div class="cd-note">Nov 4, 3:00 PM PST</div>
+      <div class="cd-label">Ouverture <strong id="launch-local"></strong></div>
+      <div class="cd-note">4 nov., 15 h PST</div>
       <div class="cd-grid">
-        <div><span id="cd-d">--</span><small>days</small></div>
-        <div><span id="cd-h">--</span><small>hours</small></div>
+        <div><span id="cd-d">--</span><small>jours</small></div>
+        <div><span id="cd-h">--</span><small>heures</small></div>
         <div><span id="cd-m">--</span><small>min</small></div>
         <div><span id="cd-s">--</span><small>sec</small></div>
       </div>
@@ -36,30 +36,30 @@
 <div class="layout">
   <aside class="side">
     <form class="search" id="search-form" role="search">
-      <label class="search-label" for="search">Search tips</label>
-      <input id="search" type="search" placeholder="Search tips" autocomplete="off" enterkeyhint="search" spellcheck="false">
+      <label class="search-label" for="search">Chercher une astuce</label>
+      <input id="search" type="search" placeholder="Chercher une astuce" autocomplete="off" enterkeyhint="search" spellcheck="false">
     </form>
     <div class="side-tools">
-      <label class="toggle"><input type="checkbox" id="hideKnown"> Hide known</label>
-      <button type="button" class="text-btn" id="expandAll" aria-pressed="false">Expand all</button>
+      <label class="toggle"><input type="checkbox" id="hideKnown"> Masquer les connues</label>
+      <button type="button" class="text-btn" id="expandAll" aria-pressed="false">Tout ouvrir</button>
     </div>
-    <nav class="nav" id="nav" aria-label="Categories"></nav>
-    <p class="count"><span id="count" aria-live="polite"></span> <button type="button" class="text-btn" id="reset" hidden>Reset filters</button></p>
+    <nav class="nav" id="nav" aria-label="Catégories"></nav>
+    <p class="count"><span id="count" aria-live="polite"></span> <button type="button" class="text-btn" id="reset" hidden>Réinitialiser</button></p>
   </aside>
 
   <main id="tips">
     <section id="must" class="spotlight" hidden></section>
     <div id="list"></div>
     <div id="empty" class="empty" role="status" hidden>
-      <p id="empty-text">No tips match.</p>
-      <button type="button" class="text-btn solid" id="clear">Clear search and filters</button>
+      <p id="empty-text">Aucune astuce.</p>
+      <button type="button" class="text-btn solid" id="clear">Effacer la recherche et les filtres</button>
     </div>
   </main>
 </div>
 
 <footer>
-  <p><span class="badge must">Must know</span> read these first. <span class="badge beta">Beta</span> learned in the beta, may change at launch. <span class="badge classic">Classic-era</span> Classic wisdom that still applies.</p>
-  <p>Checks stay in this browser only. Every tip links to its source. <a href="submit.html">Submit a tip</a> — it appears after it's approved. Not affiliated with Blizzard.</p>
+  <p><span class="badge must">À savoir</span> à lire en premier. <span class="badge beta">Bêta</span> vu en bêta, ça peut changer au lancement. <span class="badge classic">Ère Classique</span> réflexe Classique qui tient encore.</p>
+  <p>Les coches restent dans ce navigateur. Chaque astuce renvoie à sa source. <a href="submit.html">Propose une astuce</a> — elle apparaît une fois approuvée. Pas affilié à Blizzard.</p>
 </footer>
 
 <script src="tips.js"></script>

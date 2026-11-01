@@ -40,11 +40,11 @@ The page shows `summary` (or `title`) as the one-line takeaway and keeps `text` 
 
 Remember the comma between blocks. Always link where you found the tip.
 New category? Add it to `window.CATEGORIES` at the bottom of `tips.js`.
-Optional `short` on a category is the compact nav label; `label` is the section heading. Those labels are also the exact category choices on the submit form (`community.js`).
+`short` est le libellé court de la nav ; `label` est le titre de section, en français. Les valeurs envoyées au formulaire Google restent les chaînes anglaises de `community.js` — il ne faut pas les traduire, la feuille et le CSV sont en anglais.
 
-## Submitting a tip
-Open **Submit a tip** (`submit.html`). No account. The form posts to a Google Form. Nothing is public until it is approved.
+## Proposer une astuce
+Ouvre **Proposer une astuce** (`submit.html`). Pas de compte. Le formulaire part vers un Google Form. Rien n'est public tant que ce n'est pas approuvé.
 
-Approval happens in the sheet: <https://docs.google.com/spreadsheets/d/1_pIif9WGzURLXSXnn9RDIVFEu5mqf0xbpvuo8Ijq_ic/edit>
+L'approbation se fait dans la feuille : <https://docs.google.com/spreadsheets/d/1_pIif9WGzURLXSXnn9RDIVFEu5mqf0xbpvuo8Ijq_ic/edit>
 
-Type `yes` in the **Approved** column (column G). `y`, `true`, `x`, and `1` also count. The site reads the published CSV and adds those rows to the list. Google can take a few minutes to republish the CSV. If the CSV can't be loaded, the curated tips in `tips.js` still show.
+Tape `yes` dans la colonne **Approved** (colonne G). `y`, `true`, `x` et `1` comptent aussi. Le site lit le CSV publié et ajoute ces lignes à la liste. Google peut mettre quelques minutes à republier le CSV. Si le CSV ne charge pas, les astuces de `tips.js` s'affichent quand même. Les astuces de la communauté restent dans la langue où elles ont été écrites. Les catégories du formulaire doivent rester exactement : `Before launch / settings & UI`, `Race & class picks`, `Leveling route & questing`, `Professions & gold`, `Group play & dungeons`, `Addons`, `Mistakes to avoid`.

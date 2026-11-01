@@ -6,17 +6,17 @@
   var STORE = "wowft-known-v1";
   var tips = window.TIPS || [];
   var cats = window.CATEGORIES || {};
-  var state = { q: "", cat: "all", hideKnown: false, expandAll: false };
+  var state = { q: "", qRaw: "", cat: "all", hideKnown: false, expandAll: false };
   var known = loadKnown();
 
   var HINTS = {
-    before: "Client, settings and names — before you sit in the queue.",
-    race: "What to roll, and the early spec surprises.",
-    leveling: "Routes, rested XP, and how the first hours go.",
-    professions: "Where the early gold is, and what to train.",
-    group: "Dungeons, duos, and getting to the entrance.",
-    addons: "What the game already includes, and what is worth adding.",
-    mistakes: "The avoidable deaths and gold sinks."
+    before: "Client, réglages et noms — avant de poireauter dans la file.",
+    race: "Quoi roll, et les surprises de spec du début.",
+    leveling: "Routes, XP reposé, et comment se passent les premières heures.",
+    professions: "Où est l'or du début, et quoi apprendre.",
+    group: "Donjons, duos, et comment arriver à l'entrée.",
+    addons: "Ce que le jeu a déjà, et ce qui vaut le coup d'ajouter.",
+    mistakes: "Les morts et les gouffres à or que tu peux éviter."
   };
 
   var ICONS = {
@@ -34,8 +34,8 @@
   // ---- countdown ----
   var launchEl = document.getElementById("launch-local");
   if (launchEl) {
-    var fmt = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
-    launchEl.textContent = fmt.format(LAUNCH) + " Brussels";
+    var fmt = new Intl.DateTimeFormat("fr-BE", { timeZone: TZ, weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+    launchEl.textContent = fmt.format(LAUNCH) + " (Bruxelles)";
   }
   function pad(n) { return String(n).padStart(2, "0"); }
   function tick() {
@@ -43,7 +43,7 @@
     if (!grid) return;
     var ms = LAUNCH - Date.now();
     if (ms <= 0) {
-      grid.outerHTML = '<div class="live">Servers are live — go level.</div>';
+      grid.outerHTML = '<div class="live">Les serveurs sont ouverts — c’est parti.</div>';
       return;
     }
     var s = Math.floor(ms / 1000);
@@ -73,6 +73,9 @@
     svg.innerHTML = ICONS[name] || ICONS.all;
     return svg;
   }
+  function fold(s) {
+    return String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/œ/g, "oe").replace(/æ/g, "ae");
+  }
   function catName(key, full) {
     var c = cats[key];
     if (!c) return key;
@@ -84,13 +87,13 @@
     return [
       t.title, t.summary || "", t.text, t.id,
       t.source && t.source.name, t.source && t.source.type, more,
-      t.by || "", t.community ? "community" : "",
-      catName(t.cat, true)
-    ].join(" ").toLowerCase();
+      t.by || "", t.community ? "community communauté" : "",
+      catName(t.cat, true), catName(t.cat, false)
+    ].join(" ");
   }
   function queryMatch(t) {
     if (!state.q) return true;
-    var hay = haystack(t);
+    var hay = fold(haystack(t));
     return state.q.split(/\s+/).filter(Boolean).every(function (w) { return hay.indexOf(w) !== -1; });
   }
   function rowMatch(t, catMode) {
@@ -140,9 +143,9 @@
     nav.appendChild(b);
     navButtons[key] = b;
   }
-  addNavButton("all", "All");
-  addNavButton("must", "Must know");
-  var orderLabel = el("div", "nav-label", "In order");
+  addNavButton("all", "Tout");
+  addNavButton("must", "À savoir");
+  var orderLabel = el("div", "nav-label", "Dans l'ordre");
   nav.appendChild(orderLabel);
   Object.keys(cats).forEach(function (k) { addNavButton(k, catName(k, false)); });
 
@@ -167,9 +170,10 @@
     a.href = src.url;
     a.target = "_blank";
     a.rel = "noopener noreferrer";
-    a.appendChild(el("span", "stype " + (src.type || ""), src.type || "Link"));
+    var shownType = !src.type || src.type === "Link" ? "Lien" : src.type;
+    a.appendChild(el("span", "stype " + (src.type || "Link"), shownType));
     a.appendChild(document.createTextNode(src.name || src.url));
-    a.appendChild(el("span", "sr", " (opens in a new tab)"));
+    a.appendChild(el("span", "sr", " (s'ouvre dans un nouvel onglet)"));
     li.appendChild(a);
     return li;
   }
@@ -185,7 +189,7 @@
     var input = document.createElement("input");
     input.type = "checkbox";
     input.checked = !!known[t.id];
-    input.setAttribute("aria-label", "Mark as known: " + takeaway(t));
+    input.setAttribute("aria-label", "Marquer comme connu : " + takeaway(t));
     var tick = el("span", "tick");
     tick.setAttribute("aria-hidden", "true");
     label.appendChild(input);
@@ -198,11 +202,11 @@
     sum.appendChild(el("span", "take", takeaway(t)));
     var badges = el("span", "badges");
     if (opts.showCat) badges.appendChild(el("span", "badge where", catName(t.cat, false)));
-    if (t.must && !opts.hideMust) badges.appendChild(el("span", "badge must", "Must know"));
-    if (t.badge === "beta") badges.appendChild(el("span", "badge beta", "Beta"));
-    if (t.badge === "classic") badges.appendChild(el("span", "badge classic", "Classic-era"));
-    if (t.community) badges.appendChild(el("span", "badge community", "Community"));
-    if (t.by) badges.appendChild(el("span", "byline", "by " + t.by));
+    if (t.must && !opts.hideMust) badges.appendChild(el("span", "badge must", "À savoir"));
+    if (t.badge === "beta") badges.appendChild(el("span", "badge beta", "Bêta"));
+    if (t.badge === "classic") badges.appendChild(el("span", "badge classic", "Ère Classique"));
+    if (t.community) badges.appendChild(el("span", "badge community", "Communauté"));
+    if (t.by) badges.appendChild(el("span", "byline", "par " + t.by));
     sum.appendChild(badges);
     sum.appendChild(el("span", "chev"));
     summary.appendChild(sum);
@@ -245,15 +249,16 @@
     var pct = stats.total ? Math.round(stats.n / stats.total * 100) : 0;
     bar.style.width = pct + "%";
     text.textContent = stats.n
-      ? stats.n + " of " + stats.total + " checked off on this browser."
-      : "Read these " + stats.total + " first. Check one off when it's in your head.";
+      ? stats.n + " sur " + stats.total + " cochées dans ce navigateur."
+      : "Lis ces " + stats.total + " d'abord. Coche quand c'est dans la tête.";
   }
 
   function updateCount() {
     var shown = countFor(state.cat);
     var knownN = Object.keys(known).length;
-    var text = "Showing " + shown + " of " + tips.length + " tips";
-    if (knownN) text += " · " + knownN + " known";
+    var text = shown + " sur " + tips.length + " astuces";
+    if (knownN === 1) text += " · 1 connue";
+    else if (knownN) text += " · " + knownN + " connues";
     setText("count", text);
     var reset = document.getElementById("reset");
     var dirty = !!(state.q || state.cat !== "all" || state.hideKnown);
@@ -274,7 +279,7 @@
         mustEl.hidden = false;
         var head = el("div", "spot-head");
         var titles = el("div");
-        titles.appendChild(el("h2", null, "Must know"));
+        titles.appendChild(el("h2", null, "À savoir"));
         var progress = el("p", null, "");
         progress.id = "must-progress";
         titles.appendChild(progress);
@@ -317,7 +322,7 @@
       var hint = HINTS[k] || "";
       if (showSpot) {
         var pulled = tips.filter(function (t) { return t.cat === k && t.must && rowMatch(t, "all"); }).length;
-        if (pulled) hint += (hint ? " " : "") + pulled + (pulled === 1 ? " must-know tip is listed above." : " must-know tips are listed above.");
+        if (pulled) hint += (hint ? " " : "") + (pulled === 1 ? "1 astuce à savoir est déjà au-dessus." : pulled + " astuces à savoir sont déjà au-dessus.");
       }
       if (hint) sec.appendChild(el("p", "hint", hint));
       var rows = el("div", "rows");
@@ -330,13 +335,13 @@
     var none = shown === 0;
     emptyEl.hidden = !none;
     if (none) {
-      var q = state.q;
-      setText("empty-text", q ? "No tips match “" + q + "”." : "No tips match these filters.");
+      setText("empty-text", state.qRaw ? "Aucune astuce pour « " + state.qRaw + " »." : "Aucune astuce avec ces filtres.");
     }
   }
 
   document.getElementById("search").addEventListener("input", function (e) {
-    state.q = e.target.value.trim().toLowerCase();
+    state.qRaw = e.target.value.trim();
+    state.q = fold(state.qRaw);
     render();
   });
   document.getElementById("search-form").addEventListener("submit", function (e) { e.preventDefault(); });
@@ -347,11 +352,12 @@
   document.getElementById("expandAll").addEventListener("click", function () {
     state.expandAll = !state.expandAll;
     this.setAttribute("aria-pressed", state.expandAll ? "true" : "false");
-    this.textContent = state.expandAll ? "Collapse" : "Expand all";
+    this.textContent = state.expandAll ? "Tout replier" : "Tout ouvrir";
     render();
   });
   function resetFilters() {
     state.q = "";
+    state.qRaw = "";
     state.cat = "all";
     state.hideKnown = false;
     var search = document.getElementById("search");
@@ -373,7 +379,8 @@
       setTimeout(function () {
         if (search.value === before + "/") {
           search.value = before;
-          state.q = before.trim().toLowerCase();
+          state.qRaw = before.trim();
+          state.q = fold(state.qRaw);
           render();
         }
       }, 0);
