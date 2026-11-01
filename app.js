@@ -214,6 +214,13 @@
 
     var detail = el("div", "detail");
     detail.appendChild(el("p", "text", t.text));
+    if (t.image) {
+      var img = el("img", "tip-image");
+      img.src = t.image;
+      img.alt = "";
+      img.loading = "lazy";
+      detail.appendChild(img);
+    }
     var list = el("ul", "sources");
     [t.source].concat(t.more || []).forEach(function (src) {
       var item = sourceLink(src);

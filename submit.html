@@ -52,6 +52,13 @@
     </div>
 
     <div class="field">
+      <label for="image">Image <span class="optional">facultative</span></label>
+      <input id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="image-hint image-error">
+      <p class="hint" id="image-hint">JPG, PNG ou WebP, 5 Mo maximum. L'image est hébergée publiquement dès l'envoi. Décris dans le détail toute information importante visible sur l'image.</p>
+      <p class="field-error" id="image-error" hidden></p>
+    </div>
+
+    <div class="field">
       <label for="name">Ton nom <span class="optional">facultatif</span></label>
       <input id="name" name="name" type="text" maxlength="80" autocomplete="nickname" placeholder="Comment on te crédite ?">
       <p class="hint">Enregistré dans ce navigateur pour ne pas le retaper. Affiché « par nom » une fois l'astuce approuvée.</p>
@@ -65,7 +72,7 @@
 
   <div class="thanks" id="success" role="status" hidden>
     <h2>Merci ! Elle apparaîtra une fois approuvée.</h2>
-    <p>La liste se met à jour quelques minutes après le « yes » dans la feuille. D'ici là, il n'y a que toi qui sais que tu l'as envoyée.</p>
+    <p>La liste se met à jour quelques minutes après l'approbation dans la feuille.</p>
     <button type="button" class="btn" id="another">En proposer une autre</button>
   </div>
 </main>

@@ -289,6 +289,7 @@ details[open] .chev { transform: rotate(45deg); margin-top: 4px; }
 
 .detail { padding: 0 14px 14px 0; max-width: 68ch; }
 .detail .text { margin: 2px 0 12px; color: var(--body); }
+.tip-image { display: block; max-width: 100%; max-height: 420px; margin: 0 0 12px; border-radius: 8px; }
 .sources { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .src {
   display: inline-flex;
@@ -449,6 +450,7 @@ footer .badge { vertical-align: 1px; }
   font: 16px/1.45 var(--sans);
 }
 .field textarea { resize: vertical; min-height: 120px; }
+.field input[type="file"] { max-width: 100%; color: var(--body); }
 .field input:focus, .field textarea:focus { outline: 2px solid var(--focus); outline-offset: 1px; }
 .field input[aria-invalid="true"], .field textarea[aria-invalid="true"] { border-color: #e7a090; }
 .hint { margin: 6px 0 0; color: var(--muted); font-size: .85rem; }
