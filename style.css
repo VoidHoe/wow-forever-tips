@@ -318,6 +318,8 @@ details[open] .chev { transform: rotate(45deg); margin-top: 4px; }
 .badge.must { background: var(--must); color: var(--must-ink); }
 .badge.beta { background: var(--beta); color: var(--beta-ink); }
 .badge.classic { background: var(--classic); color: var(--classic-ink); }
+.badge.community { background: #1d4a3c; color: #e7fff4; }
+.byline { color: var(--muted); font-size: .78rem; font-weight: 600; text-transform: none; letter-spacing: 0; }
 .badge.where {
   background: transparent;
   color: var(--muted);
@@ -405,6 +407,72 @@ footer .badge { vertical-align: 1px; }
   .countdown { width: 100%; }
   .cd-grid span { font-size: 1.15rem; }
 }
+
+.hero-actions { margin: 14px 0 0; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--gold);
+  background: var(--gold);
+  color: var(--must-ink);
+  font: 700 .95rem/1 var(--sans);
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn:hover { filter: brightness(1.05); }
+.btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.btn:disabled { opacity: .55; cursor: progress; }
+.btn.ghost { background: transparent; color: var(--gold-2); border-color: var(--line-strong); }
+
+.sheet { max-width: 720px; margin: 0 auto; padding: 8px 16px 48px; }
+.sheet form, .thanks {
+  background: var(--elev);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 16px 16px;
+}
+.field { margin: 0 0 16px; }
+.field label, .field legend { display: block; font-weight: 700; margin-bottom: 6px; }
+.optional { color: var(--muted); font-weight: 600; font-size: .8rem; }
+.field input[type="text"], .field input[type="url"], .field textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.45 var(--sans);
+}
+.field textarea { resize: vertical; min-height: 120px; }
+.field input:focus, .field textarea:focus { outline: 2px solid var(--focus); outline-offset: 1px; }
+.field input[aria-invalid="true"], .field textarea[aria-invalid="true"] { border-color: #e7a090; }
+.hint { margin: 6px 0 0; color: var(--muted); font-size: .85rem; }
+.field-error, .form-error { margin: 6px 0 0; color: #f0c2b4; font-size: .9rem; }
+.choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.choice { position: relative; cursor: pointer; }
+.choice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.choice span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  font-weight: 600;
+}
+.choice input:checked + span { background: var(--gold); color: var(--must-ink); border-color: var(--gold); }
+.choice input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
+.form-actions { margin-top: 8px; }
+.thanks h2 { margin: 0 0 8px; font-family: var(--serif); color: var(--gold-2); font-size: 1.6rem; }
+.thanks p { margin: 0 0 16px; color: var(--body); }
+fieldset.field { border: 0; padding: 0; margin: 0 0 16px; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

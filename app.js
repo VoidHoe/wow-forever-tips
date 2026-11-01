@@ -84,6 +84,7 @@
     return [
       t.title, t.summary || "", t.text, t.id,
       t.source && t.source.name, t.source && t.source.type, more,
+      t.by || "", t.community ? "community" : "",
       catName(t.cat, true)
     ].join(" ").toLowerCase();
   }
@@ -154,7 +155,7 @@
   }
 
   function sourceLink(src) {
-    if (!src || !src.url) return null;
+    if (!src || !src.url || !/^https?:\/\//i.test(src.url)) return null;
     var li = el("li");
     var a = el("a", "src");
     a.href = src.url;
@@ -172,6 +173,7 @@
     var article = el("article", "tip" + (t.must ? " is-must" : "") + (known[t.id] ? " is-known" : ""));
     article.id = "tip-" + t.id;
     article.dataset.id = t.id;
+    if (t.community) article.dataset.community = "1";
 
     var label = el("label", "mark");
     var input = document.createElement("input");
@@ -193,6 +195,8 @@
     if (t.must && !opts.hideMust) badges.appendChild(el("span", "badge must", "Must know"));
     if (t.badge === "beta") badges.appendChild(el("span", "badge beta", "Beta"));
     if (t.badge === "classic") badges.appendChild(el("span", "badge classic", "Classic-era"));
+    if (t.community) badges.appendChild(el("span", "badge community", "Community"));
+    if (t.by) badges.appendChild(el("span", "byline", "by " + t.by));
     sum.appendChild(badges);
     sum.appendChild(el("span", "chev"));
     summary.appendChild(sum);
@@ -290,7 +294,11 @@
         if (showSpot && t.must) return false;
         return true;
       });
-      group.sort(function (a, b) { return (b.must === true) - (a.must === true); });
+      group.sort(function (a, b) {
+        var must = (b.must === true) - (a.must === true);
+        if (must) return must;
+        return (a.community === true) - (b.community === true);
+      });
       if (!group.length) return;
       shown += group.length;
       var sec = el("section", "group");
@@ -369,5 +377,32 @@
     }
   });
 
+  function absorbCommunity(extra) {
+    if (!extra || !extra.length) return;
+    var seen = {};
+    tips.forEach(function (t) { if (t.id) seen[t.id] = 1; });
+    var added = false;
+    extra.forEach(function (t) {
+      if (!t || !t.id || seen[t.id]) return;
+      seen[t.id] = 1;
+      tips.push(t);
+      added = true;
+    });
+    if (added) render();
+  }
+
+  function loadCommunity() {
+    if (!window.COMMUNITY || typeof fetch !== "function") return;
+    var url = window.COMMUNITY_CSV_URL || window.COMMUNITY.csvUrl;
+    if (!url) return;
+    fetch(url).then(function (res) {
+      if (!res || !res.ok) throw new Error("csv");
+      return res.text();
+    }).then(function (text) {
+      absorbCommunity(window.COMMUNITY.rowsToTips(text, tips));
+    }).catch(function () {});
+  }
+
   render();
+  loadCommunity();
 })();
