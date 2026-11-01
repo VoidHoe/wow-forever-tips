@@ -147,11 +147,17 @@
   Object.keys(cats).forEach(function (k) { addNavButton(k, catName(k, false)); });
 
   function updateNav() {
+    var anyCat = false;
     Object.keys(navButtons).forEach(function (key) {
       var b = navButtons[key];
+      var n = countFor(key);
       b.setAttribute("aria-pressed", state.cat === key ? "true" : "false");
-      b.querySelector(".n").textContent = String(countFor(key));
+      b.querySelector(".n").textContent = String(n);
+      var keep = key === "all" || state.cat === key || n > 0;
+      b.hidden = !keep;
+      if (keep && key !== "all" && key !== "must") anyCat = true;
     });
+    if (orderLabel) orderLabel.hidden = !anyCat;
   }
 
   function sourceLink(src) {
