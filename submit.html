@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#110f0c">
+<title>Submit a tip – WoW Forever</title>
+<meta name="description" content="Send a WoW Forever leveling tip. No account. It shows up on the list after it's approved.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23110f0c'/%3E%3Cpath d='M8 2.2l1.5 3.2 3.5.5-2.5 2.4.6 3.5L8 10.4 4.9 12l.6-3.5L3 6l3.5-.5z' fill='%23e2b15a'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#tip-form">Skip to the form</a>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="brand">
+      <p class="eyebrow">Field guide for the first run</p>
+      <h1>Submit a <span>tip</span></h1>
+      <p class="sub">No account. Write the one-line takeaway, pick a category, and add where you found it. Approved tips show up on the list.</p>
+      <p class="hero-actions"><a class="btn ghost" href="index.html">Back to all tips</a></p>
+    </div>
+  </div>
+</header>
+
+<main class="sheet">
+  <form id="tip-form" novalidate>
+    <div class="field">
+      <label for="title">Tip title</label>
+      <input id="title" name="title" type="text" maxlength="140" required autocomplete="off" placeholder="Save 100 gold for riding at 40" aria-describedby="title-hint title-error">
+      <p class="hint" id="title-hint">One short line. About 80 characters reads best. <span id="title-count">0/140</span></p>
+      <p class="field-error" id="title-error" hidden></p>
+    </div>
+
+    <fieldset class="field">
+      <legend>Category</legend>
+      <div class="choices" id="choices" role="radiogroup" aria-required="true" aria-describedby="cat-error"></div>
+      <p class="field-error" id="cat-error" hidden></p>
+    </fieldset>
+
+    <div class="field">
+      <label for="details">Details</label>
+      <textarea id="details" name="details" rows="5" maxlength="4000" required placeholder="One to three sentences. What should someone actually do?" aria-describedby="details-error"></textarea>
+      <p class="field-error" id="details-error" hidden></p>
+    </div>
+
+    <div class="field">
+      <label for="source">Source link <span class="optional">optional</span></label>
+      <input id="source" name="source" type="text" inputmode="url" placeholder="https://…" autocomplete="off" aria-describedby="source-error">
+      <p class="hint">A Reddit thread, video, post, or guide. Leave it blank if you don't have one.</p>
+      <p class="field-error" id="source-error" hidden></p>
+    </div>
+
+    <div class="field">
+      <label for="name">Your name <span class="optional">optional</span></label>
+      <input id="name" name="name" type="text" maxlength="80" autocomplete="nickname" placeholder="How should we credit you?">
+      <p class="hint">Saved in this browser so you don't retype it. Shown as “by name” once the tip is approved.</p>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn" id="send">Submit tip</button>
+    </div>
+    <p class="form-error" id="form-error" role="alert" hidden></p>
+  </form>
+
+  <div class="thanks" id="success" role="status" hidden>
+    <h2>Thanks! It will appear once approved.</h2>
+    <p>The list updates a few minutes after it's marked approved. Until then, only you know you sent it.</p>
+    <button type="button" class="btn" id="another">Submit another</button>
+  </div>
+</main>
+
+<script src="tips.js"></script>
+<script src="community.js"></script>
+<script src="submit.js"></script>
+</body>
+</html>

@@ -3,18 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#110f0c">
 <title>WoW Forever – Leveling Tips for the First Run</title>
 <meta name="description" content="Community-sourced WoW Forever leveling tips: settings, classes, routes, professions, dungeons, addons and mistakes to avoid.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23110f0c'/%3E%3Cpath d='M8 2.2l1.5 3.2 3.5.5-2.5 2.4.6 3.5L8 10.4 4.9 12l.6-3.5L3 6l3.5-.5z' fill='%23e2b15a'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="skip" href="#tips">Skip to tips</a>
+
 <header class="hero">
   <div class="hero-inner">
-    <p class="eyebrow">Hard-earned wisdom for the first run</p>
-    <h1>WoW <span>Forever</span> Tips</h1>
-    <p class="sub">Things people only learn after hundreds of hours – collected from Reddit, YouTube, X, guides and Blizzard, each with its source.</p>
+    <div class="brand">
+      <p class="eyebrow">Field guide for the first run</p>
+      <h1>WoW Forever <span>Tips</span></h1>
+      <p class="sub">One line each. Open a tip only when you need the detail.</p>
+      <p class="hero-actions"><a class="btn" href="submit.html">Submit a tip</a></p>
+    </div>
     <div class="countdown" id="countdown" aria-live="polite">
       <div class="cd-label">Servers open <strong id="launch-local"></strong></div>
+      <div class="cd-note">Nov 4, 3:00 PM PST</div>
       <div class="cd-grid">
         <div><span id="cd-d">--</span><small>days</small></div>
         <div><span id="cd-h">--</span><small>hours</small></div>
@@ -25,26 +33,37 @@
   </div>
 </header>
 
-<main>
-  <section class="controls" aria-label="Filter tips">
-    <div class="search-row">
-      <input id="search" type="search" placeholder="Search tips… (e.g. rested, Hogger, skinning)" aria-label="Search tips">
-      <label class="toggle"><input type="checkbox" id="mustOnly"> ★ Must know only</label>
+<div class="layout">
+  <aside class="side">
+    <form class="search" id="search-form" role="search">
+      <label class="search-label" for="search">Search tips</label>
+      <input id="search" type="search" placeholder="Search tips" autocomplete="off" enterkeyhint="search" spellcheck="false">
+    </form>
+    <div class="side-tools">
+      <label class="toggle"><input type="checkbox" id="hideKnown"> Hide known</label>
+      <button type="button" class="text-btn" id="expandAll" aria-pressed="false">Expand all</button>
     </div>
-    <div class="chips" id="chips" role="tablist"></div>
-    <p class="count" id="count"></p>
-  </section>
+    <nav class="nav" id="nav" aria-label="Categories"></nav>
+    <p class="count"><span id="count" aria-live="polite"></span> <button type="button" class="text-btn" id="reset" hidden>Reset filters</button></p>
+  </aside>
 
-  <section id="list" class="list"></section>
-  <p id="empty" class="empty" hidden>No tips match. Try another search.</p>
-</main>
+  <main id="tips">
+    <section id="must" class="spotlight" hidden></section>
+    <div id="list"></div>
+    <div id="empty" class="empty" role="status" hidden>
+      <p id="empty-text">No tips match.</p>
+      <button type="button" class="text-btn solid" id="clear">Clear search and filters</button>
+    </div>
+  </main>
+</div>
 
 <footer>
-  <p><span class="badge beta">Beta</span> = learned in the beta, may change at launch. <span class="badge classic">Classic-era</span> = Classic wisdom that still applies.</p>
-  <p>Every tip links to where we found it. Want to add one? See <code>README.md</code>. Not affiliated with Blizzard.</p>
+  <p><span class="badge must">Must know</span> read these first. <span class="badge beta">Beta</span> learned in the beta, may change at launch. <span class="badge classic">Classic-era</span> Classic wisdom that still applies.</p>
+  <p>Checks stay in this browser only. Every tip links to its source. <a href="submit.html">Submit a tip</a> — it appears after it's approved. Not affiliated with Blizzard.</p>
 </footer>
 
 <script src="tips.js"></script>
+<script src="community.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
