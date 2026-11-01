@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WoW Forever – Leveling Tips for the First Run</title>
+<meta name="description" content="Community-sourced WoW Forever leveling tips: settings, classes, routes, professions, dungeons, addons and mistakes to avoid.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Hard-earned wisdom for the first run</p>
+    <h1>WoW <span>Forever</span> Tips</h1>
+    <p class="sub">Things people only learn after hundreds of hours – collected from Reddit, YouTube, X, guides and Blizzard, each with its source.</p>
+    <div class="countdown" id="countdown" aria-live="polite">
+      <div class="cd-label">Servers open <strong id="launch-local"></strong></div>
+      <div class="cd-grid">
+        <div><span id="cd-d">--</span><small>days</small></div>
+        <div><span id="cd-h">--</span><small>hours</small></div>
+        <div><span id="cd-m">--</span><small>min</small></div>
+        <div><span id="cd-s">--</span><small>sec</small></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="controls" aria-label="Filter tips">
+    <div class="search-row">
+      <input id="search" type="search" placeholder="Search tips… (e.g. rested, Hogger, skinning)" aria-label="Search tips">
+      <label class="toggle"><input type="checkbox" id="mustOnly"> ★ Must know only</label>
+    </div>
+    <div class="chips" id="chips" role="tablist"></div>
+    <p class="count" id="count"></p>
+  </section>
+
+  <section id="list" class="list"></section>
+  <p id="empty" class="empty" hidden>No tips match. Try another search.</p>
+</main>
+
+<footer>
+  <p><span class="badge beta">Beta</span> = learned in the beta, may change at launch. <span class="badge classic">Classic-era</span> = Classic wisdom that still applies.</p>
+  <p>Every tip links to where we found it. Want to add one? See <code>README.md</code>. Not affiliated with Blizzard.</p>
+</footer>
+
+<script src="tips.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
