@@ -52,10 +52,8 @@ Tape `yes` dans la colonne **Approved** (actuellement colonne I). `y`, `true`, `
 
 ## Images envoyées avec les astuces
 
-Le champ **Image** du Google Form est un champ texte pour une URL. Le site peut envoyer un fichier depuis l'appareil vers Cloudinary, puis placer l'URL obtenue dans ce champ. Pour l'activer :
+Le champ **Image** du Google Form est un champ texte pour une URL. Le site envoie le fichier choisi vers le preset Cloudinary `wowforevertips` du cloud `xj5obs3e`, puis place l'URL obtenue dans ce champ. Ces deux valeurs sont publiques ; ne mets jamais de clé secrète dans le site.
 
-1. Publie un CSV contenant **uniquement les lignes approuvées**, puis remplace `csvUrl` dans `community.js`. Le CSV actuel publie aussi les astuces en attente, leurs noms et leurs URL d'image. Garde l'onglet des réponses brut privé et ne publie que l'onglet filtré.
-2. Crée un compte Cloudinary et un **unsigned upload preset** qui accepte uniquement JPG, PNG et WebP. Cloudinary ne permet pas de limite de taille par preset ; le formulaire du site vérifie les 5 Mo dans le navigateur. Si une limite stricte côté serveur devient nécessaire, il faudra un endpoint d'envoi côté serveur.
-3. Renseigne `imageUpload.cloudName` et `imageUpload.uploadPreset` dans `community.js`. Ces deux valeurs sont publiques ; ne mets jamais de clé secrète dans le site. Le choix de fichier reste masqué tant qu'elles sont vides.
+Le CSV public est celui de l'onglet **Approved only**. L'onglet **Form Responses 1** reste privé ; ne le publie pas. Le formulaire vérifie JPG, PNG et WebP ainsi que la limite de 5 Mo dans le navigateur. Cloudinary ne permet pas de limite de taille par preset ; une limite stricte côté serveur nécessiterait un endpoint d'envoi côté serveur.
 
 L'image est hébergée publiquement dès son téléversement, avant l'approbation de l'astuce. Une image envoyée sans astuce approuvée restera sur Cloudinary jusqu'à sa suppression manuelle.
