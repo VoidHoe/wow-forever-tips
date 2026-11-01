@@ -22,7 +22,12 @@
 
   function chipLabel(cat) {
     var known = window.CATEGORIES && window.CATEGORIES[cat.id];
-    if (known && known.label === cat.label && known.short) return known.short;
+    if (known) return known.short || known.label;
+    return cat.label;
+  }
+  function chipTitle(cat) {
+    var known = window.CATEGORIES && window.CATEGORIES[cat.id];
+    if (known && known.label) return known.label;
     return cat.label;
   }
 
@@ -36,7 +41,7 @@
     var text = el("span", null, chipLabel(cat));
     label.appendChild(input);
     label.appendChild(text);
-    label.title = cat.label;
+    label.title = chipTitle(cat);
     choices.appendChild(label);
   });
 
@@ -95,17 +100,17 @@
     var source = looseUrl(sourceInput.value);
     var ok = true;
 
-    if (!title) { setError("title-error", "Add a short title."); ok = false; }
-    else if (title.length > 140) { setError("title-error", "Keep the title to 140 characters."); ok = false; }
+    if (!title) { setError("title-error", "Ajoute un titre court."); ok = false; }
+    else if (title.length > 140) { setError("title-error", "Garde le titre sous 140 caractères."); ok = false; }
     else setError("title-error", "");
 
-    if (!cat) { setError("cat-error", "Pick a category."); ok = false; }
+    if (!cat) { setError("cat-error", "Choisis une catégorie."); ok = false; }
     else setError("cat-error", "");
 
-    if (!details) { setError("details-error", "Add a sentence or two of detail."); ok = false; }
+    if (!details) { setError("details-error", "Ajoute une phrase ou deux de détail."); ok = false; }
     else setError("details-error", "");
 
-    if (source === null) { setError("source-error", "That link doesn't look usable. Use an https address, or leave it blank."); ok = false; }
+    if (source === null) { setError("source-error", "Ce lien n'a pas l'air utilisable. Mets une adresse https, ou laisse vide."); ok = false; }
     else setError("source-error", "");
 
     return ok ? {
@@ -121,13 +126,13 @@
     var box = document.getElementById("form-error");
     box.hidden = false;
     box.textContent = "";
-    box.appendChild(document.createTextNode("Couldn't send that. "));
-    var link = el("a", null, "Open the Google Form");
+    box.appendChild(document.createTextNode("L'envoi a planté. "));
+    var link = el("a", null, "Ouvre le formulaire Google");
     link.href = C.formView;
     link.target = "_blank";
     link.rel = "noopener noreferrer";
     box.appendChild(link);
-    box.appendChild(document.createTextNode(" and try there."));
+    box.appendChild(document.createTextNode(" et réessaie là-bas."));
   }
 
   function showSuccess() {
@@ -145,7 +150,7 @@
     if (!fields) return;
     sending = true;
     sendBtn.disabled = true;
-    sendBtn.textContent = "Sending…";
+    sendBtn.textContent = "Envoi…";
     document.getElementById("form-error").hidden = true;
     rememberName();
     C.submitTip(fields).then(function () {
@@ -155,7 +160,7 @@
     }).then(function () {
       sending = false;
       sendBtn.disabled = false;
-      sendBtn.textContent = "Submit tip";
+      sendBtn.textContent = "Envoyer l'astuce";
     });
   });
 
