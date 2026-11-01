@@ -30,7 +30,7 @@
   };
 
   // shortcut: an exposed unsigned preset can be abused, add a server upload endpoint if abuse appears.
-  var imageUpload = { cloudName: "", uploadPreset: "" };
+  var imageUpload = { cloudName: "xj5obs3e", uploadPreset: "wowforevertips" };
 
   function categoryById(id) {
     for (var i = 0; i < categories.length; i++) {
