@@ -12,8 +12,10 @@ Host it anywhere static (GitHub Pages, Netlify drop, Cloudflare Pages).
 ## Files
 - `index.html` – page layout
 - `submit.html` – no-account tip form
-- `style.css` – dark/gold theme
-- `app.js` – countdown, search, category nav, collapsed tips, “known” checks, approved community tips
+- `style.css` – shared base and submission form styles
+- `app.css` – home layout, gaming database theme, responsive cards and code snippets
+- `tip-store.js` – search, filters, browser bookmarks and approved CSV loading
+- `app.js` – navigation, tip card components, detail rendering and copy buttons
 - `community.js` – form field map, CSV parser, approval filter
 - `submit.js` – the submit form
 - `tips.js` – **the curated tips** (edit this one)
@@ -39,7 +41,8 @@ Open `tips.js`, copy any `{ ... }` block in `window.TIPS`, paste it, and edit:
 },
 ```
 
-The page shows `summary` (or `title`) as the one-line takeaway and keeps `text` behind a disclosure. “Known” checks are stored in this browser only (`localStorage`), not in the file.
+The page shows `summary` (or `title`) as the one-line takeaway and keeps `text` behind a disclosure. “Ma liste” checks are stored in this browser only (`localStorage`), not in the file.
+In `text`, fenced code blocks (three backticks), inline backticks, and lines beginning with macro commands such as `/cast` get a copy button. The renderer creates DOM text nodes instead of interpreting submitted HTML.
 If an image explains a step, include the same key information in `text` and provide `imageAlt`. Decorative images can omit `imageAlt`.
 
 Remember the comma between blocks. Always link where you found the tip.

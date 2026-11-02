@@ -1,26 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="720" height="228" viewBox="0 0 720 228">
   <title>Que faire d'une caisse Waylaid</title>
   <desc>Lis les matériaux demandés et compare leur coût à la récompense. Si remplir la caisse est intéressant, complète-la et rapporte-la. Sinon, garde-la ou vends-la.</desc>
-  <rect width="720" height="228" rx="14" fill="#101923"/>
-  <rect x="1" y="1" width="718" height="226" rx="13" fill="none" stroke="#52607b" stroke-width="2"/>
-  <text x="22" y="29" fill="#c6ff72" font-family="system-ui,sans-serif" font-size="13" font-weight="800" letter-spacing="1.5">CAISSE WAYLAID · DÉCISION RAPIDE</text>
+  <rect width="720" height="228" rx="14" fill="#10131b"/>
+  <rect x="1" y="1" width="718" height="226" rx="13" fill="none" stroke="#3e4a5f" stroke-width="2"/>
+  <text x="22" y="29" fill="#f4c33a" font-family="system-ui,sans-serif" font-size="13" font-weight="800" letter-spacing="1.5">CAISSE WAYLAID · DÉCISION RAPIDE</text>
   <g font-family="system-ui,sans-serif">
-    <rect x="20" y="46" width="204" height="83" rx="11" fill="#1c2739" stroke="#52607b"/>
-    <text x="35" y="72" fill="#c6ff72" font-size="13" font-weight="800">01</text>
+    <rect x="20" y="46" width="204" height="83" rx="11" fill="#1b2330" stroke="#3e4a5f"/>
+    <text x="35" y="72" fill="#f4c33a" font-size="13" font-weight="800">01</text>
     <text x="35" y="98" fill="#f7f8fc" font-size="16" font-weight="750">Trouve une caisse</text>
-    <text x="232" y="95" fill="#c6ff72" font-size="25" font-weight="800">→</text>
-    <rect x="254" y="46" width="212" height="83" rx="11" fill="#1c2739" stroke="#52607b"/>
-    <text x="269" y="72" fill="#c6ff72" font-size="13" font-weight="800">02</text>
+    <text x="232" y="95" fill="#f4c33a" font-size="25" font-weight="800">→</text>
+    <rect x="254" y="46" width="212" height="83" rx="11" fill="#1b2330" stroke="#3e4a5f"/>
+    <text x="269" y="72" fill="#f4c33a" font-size="13" font-weight="800">02</text>
     <text x="269" y="98" fill="#f7f8fc" font-size="16" font-weight="750">Lis les matériaux</text>
-    <text x="474" y="95" fill="#c6ff72" font-size="25" font-weight="800">→</text>
-    <rect x="496" y="46" width="203" height="83" rx="11" fill="#1c2739" stroke="#52607b"/>
-    <text x="511" y="72" fill="#c6ff72" font-size="13" font-weight="800">03</text>
+    <text x="474" y="95" fill="#f4c33a" font-size="25" font-weight="800">→</text>
+    <rect x="496" y="46" width="203" height="83" rx="11" fill="#1b2330" stroke="#3e4a5f"/>
+    <text x="511" y="72" fill="#f4c33a" font-size="13" font-weight="800">03</text>
     <text x="511" y="98" fill="#f7f8fc" font-size="16" font-weight="750">Compare le coût</text>
-    <rect x="20" y="148" width="329" height="61" rx="10" fill="#243529" stroke="#506a5c"/>
-    <text x="35" y="172" fill="#c6ff72" font-size="12" font-weight="800">SI ÇA VAUT LE COUP</text>
+    <rect x="20" y="148" width="329" height="61" rx="10" fill="#2a2417" stroke="#685b3c"/>
+    <text x="35" y="172" fill="#f4c33a" font-size="12" font-weight="800">SI ÇA VAUT LE COUP</text>
     <text x="35" y="193" fill="#f7f8fc" font-size="14" font-weight="650">Complète et rapporte la caisse</text>
-    <rect x="370" y="148" width="329" height="61" rx="10" fill="#2b2536" stroke="#61568f"/>
-    <text x="385" y="172" fill="#c9c1ff" font-size="12" font-weight="800">SI C'EST TROP CHER</text>
+    <rect x="370" y="148" width="329" height="61" rx="10" fill="#1d2430" stroke="#49566c"/>
+    <text x="385" y="172" fill="#cbd3e1" font-size="12" font-weight="800">SI C'EST TROP CHER</text>
     <text x="385" y="193" fill="#f7f8fc" font-size="14" font-weight="650">Garde-la ou vends-la</text>
   </g>
 </svg>

@@ -1,11 +1,18 @@
 (function () {
   "use strict";
 
-  var STORE = "wowft-known-v1";
-  var tips = window.TIPS || [];
-  var cats = window.CATEGORIES || {};
-  var state = { q: "", qRaw: "", cat: "all", hideKnown: false, savedOnly: false, expandAll: false };
-  var known = loadKnown();
+  var store = window.TipStore.create(window.TIPS || [], window.CATEGORIES || {}, window.COMMUNITY);
+  var tips = store.tips;
+  var cats = store.cats;
+  var state = store.state;
+  var known = store.known;
+  var fold = store.fold;
+  var catName = store.catName;
+  var takeaway = store.takeaway;
+  var rowMatch = store.rowMatch;
+  var countFor = store.countFor;
+  var saveKnown = store.saveKnown;
+  var mustStats = store.mustStats;
 
   var HINTS = {
     before: "Client, réglages et noms — avant de poireauter dans la file.",
@@ -47,55 +54,6 @@
     svg.innerHTML = ICONS[name] || ICONS.all;
     return svg;
   }
-  function fold(s) {
-    return String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/œ/g, "oe").replace(/æ/g, "ae");
-  }
-  function catName(key, full) {
-    var c = cats[key];
-    if (!c) return key;
-    return (full ? c.label : (c.short || c.label));
-  }
-  function takeaway(t) { return t.summary || t.title; }
-  function haystack(t) {
-    var more = (t.more || []).map(function (x) { return (x && (x.name || "")) + " " + (x && x.type || ""); }).join(" ");
-    return [
-      t.title, t.summary || "", t.text, t.id,
-      t.source && t.source.name, t.source && t.source.type, more,
-      t.by || "", t.community ? "community communauté" : "",
-      catName(t.cat, true), catName(t.cat, false)
-    ].join(" ");
-  }
-  function queryMatch(t) {
-    if (!state.q) return true;
-    var hay = fold(haystack(t));
-    return state.q.split(/\s+/).filter(Boolean).every(function (w) { return hay.indexOf(w) !== -1; });
-  }
-  function rowMatch(t, catMode) {
-    if (catMode === "must" && !t.must) return false;
-    if (catMode === "saved" && !known[t.id]) return false;
-    if (catMode !== "all" && catMode !== "must" && catMode !== "saved" && t.cat !== catMode) return false;
-    if (state.hideKnown && known[t.id]) return false;
-    if (state.savedOnly && !known[t.id]) return false;
-    return queryMatch(t);
-  }
-  function countFor(key) {
-    return tips.filter(function (t) { return rowMatch(t, key); }).length;
-  }
-  function loadKnown() {
-    try {
-      var raw = JSON.parse(localStorage.getItem(STORE) || "{}");
-      return raw && typeof raw === "object" ? raw : {};
-    } catch (e) { return {}; }
-  }
-  function saveKnown() {
-    try { localStorage.setItem(STORE, JSON.stringify(known)); } catch (e) {}
-  }
-  function mustStats() {
-    var all = tips.filter(function (t) { return t.must; });
-    var n = all.filter(function (t) { return known[t.id]; }).length;
-    return { n: n, total: all.length };
-  }
-
   // ---- nav (built once so a search doesn't reset the scroll position) ----
   var nav = document.getElementById("nav");
   var navButtons = {};
@@ -170,6 +128,96 @@
     return li;
   }
 
+  // Tip body component: plain text stays plain text; only explicit code is styled.
+  function copyText(value) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(value);
+    var field = el("textarea");
+    field.value = value;
+    field.style.position = "fixed";
+    field.style.opacity = "0";
+    document.body.appendChild(field);
+    field.select();
+    var copied = document.execCommand("copy");
+    field.remove();
+    return copied ? Promise.resolve() : Promise.reject(new Error("copy"));
+  }
+  function copyButton(value, inline) {
+    var button = el("button", inline ? "inline-copy" : "code-copy", "Copier");
+    button.type = "button";
+    button.setAttribute("aria-label", "Copier le code");
+    button.addEventListener("click", function () {
+      copyText(value).then(function () {
+        button.textContent = "Copié";
+        button.setAttribute("aria-label", "Code copié");
+        setTimeout(function () {
+          button.textContent = "Copier";
+          button.setAttribute("aria-label", "Copier le code");
+        }, 1800);
+      }).catch(function () { button.textContent = "Copie impossible"; });
+    });
+    return button;
+  }
+  function appendInlineText(parent, value) {
+    var pattern = /`([^`\n]+)`/g;
+    var start = 0;
+    var match;
+    while ((match = pattern.exec(value))) {
+      parent.appendChild(document.createTextNode(value.slice(start, match.index)));
+      var inline = el("span", "inline-snippet");
+      inline.appendChild(el("code", "inline-code", match[1]));
+      inline.appendChild(copyButton(match[1], true));
+      parent.appendChild(inline);
+      start = pattern.lastIndex;
+    }
+    parent.appendChild(document.createTextNode(value.slice(start)));
+  }
+  function codeBlock(value, label) {
+    var block = el("div", "code-block");
+    var head = el("div", "code-head");
+    head.appendChild(el("span", "code-label", label || "Macro"));
+    head.appendChild(copyButton(value, false));
+    block.appendChild(head);
+    var pre = el("pre");
+    pre.appendChild(el("code", null, value));
+    block.appendChild(pre);
+    return block;
+  }
+  function tipBody(value) {
+    var body = el("div", "tip-body");
+    var lines = String(value || "").replace(/\r\n/g, "\n").split("\n");
+    var prose = [];
+    function flushProse() {
+      if (!prose.length) return;
+      var p = el("p", "text");
+      appendInlineText(p, prose.join("\n"));
+      body.appendChild(p);
+      prose = [];
+    }
+    for (var i = 0; i < lines.length; i++) {
+      var fence = lines[i].match(/^\s*```([^`]*)\s*$/);
+      if (fence) {
+        var end = i + 1;
+        while (end < lines.length && !/^\s*```\s*$/.test(lines[end])) end++;
+        if (end < lines.length) {
+          flushProse();
+          body.appendChild(codeBlock(lines.slice(i + 1, end).join("\n"), fence[1].trim() || "Macro"));
+          i = end;
+          continue;
+        }
+      }
+      if (/^\s*\/(?:cast|use|console|run|script|invite|target|focus|stopcasting|startattack|who|pvp)\b/i.test(lines[i])) {
+        flushProse();
+        var commands = [lines[i]];
+        while (i + 1 < lines.length && /^\s*\//.test(lines[i + 1])) commands.push(lines[++i]);
+        body.appendChild(codeBlock(commands.join("\n"), "Macro"));
+      } else {
+        prose.push(lines[i]);
+      }
+    }
+    flushProse();
+    return body;
+  }
+
   function card(t, opts) {
     opts = opts || {};
     var article = el("article", "tip" + (t.must ? " is-must" : "") + (known[t.id] ? " is-known" : ""));
@@ -214,7 +262,7 @@
     details.appendChild(summary);
 
     var detail = el("div", "detail");
-    detail.appendChild(el("p", "text", t.text));
+    detail.appendChild(tipBody(t.text));
     if (t.image) {
       var picture = el("picture", "tip-picture");
       if (t.imageMobile) {
@@ -249,6 +297,7 @@
       article.classList.toggle("is-known", !!known[t.id]);
       updateProgress();
       updateCount();
+      updateNav();
       if ((state.hideKnown && input.checked) || (state.savedOnly && !input.checked)) render();
     });
 
@@ -276,7 +325,7 @@
 
   function updateCount() {
     var shown = countFor(state.cat);
-    var knownN = tips.filter(function (t) { return known[t.id]; }).length;
+    var knownN = store.savedCount();
     var text = shown + " sur " + tips.length + " astuces";
     if (knownN === 1) text += " · 1 dans ma liste";
     else if (knownN) text += " · " + knownN + " dans ma liste";
@@ -421,32 +470,6 @@
     }
   });
 
-  function absorbCommunity(extra) {
-    if (!extra || !extra.length) return;
-    var seen = {};
-    tips.forEach(function (t) { if (t.id) seen[t.id] = 1; });
-    var added = false;
-    extra.forEach(function (t) {
-      if (!t || !t.id || seen[t.id]) return;
-      seen[t.id] = 1;
-      tips.push(t);
-      added = true;
-    });
-    if (added) render();
-  }
-
-  function loadCommunity() {
-    if (!window.COMMUNITY || typeof fetch !== "function") return;
-    var url = window.COMMUNITY_CSV_URL || window.COMMUNITY.csvUrl;
-    if (!url) return;
-    fetch(url).then(function (res) {
-      if (!res || !res.ok) throw new Error("csv");
-      return res.text();
-    }).then(function (text) {
-      absorbCommunity(window.COMMUNITY.rowsToTips(text, tips));
-    }).catch(function () {});
-  }
-
   render();
-  loadCommunity();
+  store.loadCommunity(render);
 })();
