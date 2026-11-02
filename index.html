@@ -9,45 +9,30 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23110f0c'/%3E%3Cpath d='M8 2.2l1.5 3.2 3.5.5-2.5 2.4.6 3.5L8 10.4 4.9 12l.6-3.5L3 6l3.5-.5z' fill='%23e2b15a'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="home">
 <a class="skip" href="#tips">Aller aux astuces</a>
 
-<header class="hero">
-  <div class="hero-inner">
-    <div class="brand">
-      <p class="eyebrow">Le carnet de la première run</p>
-      <h1>Astuces <span>WoW Forever</span></h1>
-      <p class="sub">Une ligne chacune. Ouvre l'astuce seulement si tu veux le détail.</p>
-      <p class="hero-actions"><a class="btn" href="submit.html">Proposer une astuce</a></p>
-    </div>
-    <div class="countdown" id="countdown" aria-live="polite">
-      <div class="cd-label">Ouverture <strong id="launch-local"></strong></div>
-      <div class="cd-note">4 nov., 15 h PST</div>
-      <div class="cd-grid">
-        <div><span id="cd-d">--</span><small>jours</small></div>
-        <div><span id="cd-h">--</span><small>heures</small></div>
-        <div><span id="cd-m">--</span><small>min</small></div>
-        <div><span id="cd-s">--</span><small>sec</small></div>
-      </div>
-    </div>
-  </div>
-</header>
+<div class="app-bar"><a class="app-logo" href="index.html" aria-label="WoW Forever Tips, accueil"><span class="logo-mark">W</span><span>FOREVER<span class="logo-accent">/</span>TIPS</span></a><span class="app-bar-label">Référence rapide pendant ta partie</span><a class="app-bar-action" href="submit.html">+ Proposer</a></div>
 
 <div class="layout">
   <aside class="side">
     <form class="search" id="search-form" role="search">
       <label class="search-label" for="search">Chercher une astuce</label>
-      <input id="search" type="search" placeholder="Chercher une astuce" autocomplete="off" enterkeyhint="search" spellcheck="false">
+      <input id="search" type="search" placeholder="Qu'est-ce que tu cherches ?  /" autocomplete="off" enterkeyhint="search" spellcheck="false">
+      <button type="button" class="filter-toggle" id="filterToggle" aria-expanded="false" aria-controls="filterPanel">Filtres <span aria-hidden="true">☰</span></button>
     </form>
-    <div class="side-tools">
-      <label class="toggle"><input type="checkbox" id="hideKnown"> Masquer les connues</label>
-      <button type="button" class="text-btn" id="expandAll" aria-pressed="false">Tout ouvrir</button>
-    </div>
     <nav class="nav" id="nav" aria-label="Catégories"></nav>
     <p class="count"><span id="count" aria-live="polite"></span> <button type="button" class="text-btn" id="reset" hidden>Réinitialiser</button></p>
+    <div id="filterPanel" class="filter-panel">
+    <div class="side-tools">
+      <label class="toggle"><input type="checkbox" id="hideKnown"> Masquer ma liste</label>
+      <button type="button" class="text-btn" id="expandAll" aria-pressed="false">Tout ouvrir</button>
+    </div>
+    </div>
   </aside>
 
   <main id="tips">
+    <div class="quick-intro"><div><p class="eyebrow">WoW Forever · aide-mémoire</p><h1>La bonne info, vite.</h1></div><p>Recherche un sujet ou choisis une catégorie. Ouvre une carte pour le détail et la source.</p></div>
     <section id="must" class="spotlight" hidden></section>
     <div id="list"></div>
     <div id="empty" class="empty" role="status" hidden>
@@ -59,7 +44,7 @@
 
 <footer>
   <p><span class="badge must">À savoir</span> à lire en premier. <span class="badge beta">Bêta</span> vu en bêta, ça peut changer au lancement. <span class="badge classic">Ère Classique</span> réflexe Classique qui tient encore.</p>
-  <p>Les coches restent dans ce navigateur. Chaque astuce renvoie à sa source. <a href="submit.html">Propose une astuce</a> — elle apparaît une fois approuvée. Pas affilié à Blizzard.</p>
+  <p>Ta liste reste dans ce navigateur. Chaque astuce renvoie à sa source. <a href="submit.html">Propose une astuce</a> — elle apparaît une fois approuvée. Pas affilié à Blizzard.</p>
 </footer>
 
 <script src="tips.js"></script>
