@@ -33,11 +33,14 @@ Open `tips.js`, copy any `{ ... }` block in `window.TIPS`, paste it, and edit:
   must: true,                    // optional: included in Must know
   more: [ { url: "https://...", type: "YouTube", name: "Another source" } ],
                                  // optional: extra sources for a tip that several places mention
-  image: "https://..."           // optional: direct image URL; describe important content in text
+  image: "assets/example.svg",   // optional: local image or direct image URL
+  imageMobile: "assets/example-mobile.svg", // optional: narrower version for small screens
+  imageAlt: "What the image explains" // optional: describe useful information in the image
 },
 ```
 
 The page shows `summary` (or `title`) as the one-line takeaway and keeps `text` behind a disclosure. “Known” checks are stored in this browser only (`localStorage`), not in the file.
+If an image explains a step, include the same key information in `text` and provide `imageAlt`. Decorative images can omit `imageAlt`.
 
 Remember the comma between blocks. Always link where you found the tip.
 New category? Add it to `window.CATEGORIES` at the bottom of `tips.js`.

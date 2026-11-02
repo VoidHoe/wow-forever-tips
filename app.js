@@ -221,11 +221,20 @@
     var detail = el("div", "detail");
     detail.appendChild(el("p", "text", t.text));
     if (t.image) {
+      var picture = el("picture", "tip-picture");
+      if (t.imageMobile) {
+        var mobile = document.createElement("source");
+        mobile.media = "(max-width: 700px)";
+        mobile.srcset = t.imageMobile;
+        picture.appendChild(mobile);
+      }
       var img = el("img", "tip-image");
       img.src = t.image;
-      img.alt = "";
+      img.alt = t.imageAlt || "";
       img.loading = "lazy";
-      detail.appendChild(img);
+      img.decoding = "async";
+      picture.appendChild(img);
+      detail.appendChild(picture);
     }
     var list = el("ul", "sources");
     [t.source].concat(t.more || []).forEach(function (src) {

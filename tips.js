@@ -71,7 +71,10 @@ window.TIPS = [
       "type": "Blizzard",
       "name": "Blizzard – Gather Around the Campfire"
     },
-    "must": true
+    "must": true,
+    "image": "assets/camp-buffs.svg",
+    "imageMobile": "assets/camp-buffs-mobile.svg",
+    "imageAlt": "Schéma : repère un camp, reste une minute près du feu, puis profite des buffs des objets installés. Certains ne se cumulent pas avec les buffs de classe."
   },
   {
     "id": "bag-quests",
@@ -144,7 +147,10 @@ window.TIPS = [
         "name": "Fairbanks – 6 Launch Day Tips"
       }
     ],
-    "badge": "beta"
+    "badge": "beta",
+    "image": "assets/waylaid-decision.svg",
+    "imageMobile": "assets/waylaid-decision-mobile.svg",
+    "imageAlt": "Schéma : lis les matériaux d’une caisse Waylaid et compare leur coût à la récompense. Si elle vaut le coup, complète-la et rapporte-la ; sinon, garde-la ou vends-la."
   },
   {
     "id": "gathering-tools",

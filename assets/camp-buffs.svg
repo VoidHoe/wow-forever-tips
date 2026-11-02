@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="210" viewBox="0 0 720 210">
+  <title>Comment profiter d'un camp</title>
+  <desc>Repère un camp, reste une minute près du feu, puis profite des buffs des objets installés. Certains effets ne se cumulent pas avec les buffs de classe.</desc>
+  <rect width="720" height="210" rx="14" fill="#101923"/>
+  <rect x="1" y="1" width="718" height="208" rx="13" fill="none" stroke="#426856" stroke-width="2"/>
+  <text x="22" y="29" fill="#c6ff72" font-family="system-ui,sans-serif" font-size="13" font-weight="800" letter-spacing="1.5">BUFFS DE CAMP · EN UN COUP D'ŒIL</text>
+  <g font-family="system-ui,sans-serif">
+    <rect x="20" y="46" width="207" height="96" rx="11" fill="#1a2930" stroke="#506a5c"/>
+    <text x="35" y="72" fill="#c6ff72" font-size="13" font-weight="800">01</text>
+    <text x="35" y="97" fill="#f7f8fc" font-size="17" font-weight="750">Repère un camp</text>
+    <text x="35" y="121" fill="#b9c8c0" font-size="12">Le tien ou celui d'un autre</text>
+    <text x="235" y="104" fill="#c6ff72" font-size="25" font-weight="800">→</text>
+    <rect x="256" y="46" width="207" height="96" rx="11" fill="#1a2930" stroke="#506a5c"/>
+    <text x="271" y="72" fill="#c6ff72" font-size="13" font-weight="800">02</text>
+    <text x="271" y="97" fill="#f7f8fc" font-size="17" font-weight="750">Reste 1 minute</text>
+    <text x="271" y="121" fill="#b9c8c0" font-size="12">Assis ou en train de craft</text>
+    <text x="471" y="104" fill="#c6ff72" font-size="25" font-weight="800">→</text>
+    <rect x="492" y="46" width="207" height="96" rx="11" fill="#1a2930" stroke="#506a5c"/>
+    <text x="507" y="72" fill="#c6ff72" font-size="13" font-weight="800">03</text>
+    <text x="507" y="97" fill="#f7f8fc" font-size="17" font-weight="750">Prends les buffs</text>
+    <text x="507" y="121" fill="#b9c8c0" font-size="12">Selon les objets installés</text>
+    <rect x="20" y="156" width="679" height="37" rx="8" fill="#243529"/>
+    <text x="34" y="180" fill="#d8e7d8" font-size="12" font-weight="650">À retenir : certains effets ne se cumulent pas avec les buffs de classe.</text>
+  </g>
+</svg>

@@ -557,6 +557,8 @@ fieldset.field { border: 0; padding: 0; margin: 0 0 16px; }
 .home .badge.where { color: #c9c1ff; border-color: #61568f; }
 .home .detail { border-top: 1px solid var(--line); margin-top: 6px; padding: 8px 8px 8px 0; }
 .home .detail .text { margin: 0 0 9px; color: var(--body); line-height: 1.5; }
+.home .tip-picture { display: block; max-width: 720px; margin: 4px 0 12px; }
+.home .tip-picture .tip-image { width: 100%; height: auto; max-height: none; margin: 0; border: 1px solid var(--line); }
 .home .detail-label { color: var(--gold); }
 .home .src { color: #c9c1ff; }
 .home .group { margin-top: 22px; }

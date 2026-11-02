@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="365" viewBox="0 0 360 365">
+  <title>Comment profiter d'un camp</title>
+  <desc>Repère un camp, reste une minute près du feu, puis profite des buffs des objets installés. Certains effets ne se cumulent pas avec les buffs de classe.</desc>
+  <rect width="360" height="365" rx="14" fill="#101923"/>
+  <rect x="1" y="1" width="358" height="363" rx="13" fill="none" stroke="#426856" stroke-width="2"/>
+  <g font-family="system-ui,sans-serif">
+    <text x="18" y="28" fill="#c6ff72" font-size="12" font-weight="800" letter-spacing="1">BUFFS DE CAMP</text>
+    <rect x="16" y="43" width="328" height="67" rx="10" fill="#1a2930" stroke="#506a5c"/>
+    <text x="30" y="69" fill="#c6ff72" font-size="13" font-weight="800">01</text>
+    <text x="65" y="69" fill="#f7f8fc" font-size="16" font-weight="750">Repère un camp</text>
+    <text x="65" y="91" fill="#b9c8c0" font-size="12">Le tien ou celui d'un autre</text>
+    <text x="171" y="129" fill="#c6ff72" font-size="21" font-weight="800">↓</text>
+    <rect x="16" y="143" width="328" height="67" rx="10" fill="#1a2930" stroke="#506a5c"/>
+    <text x="30" y="169" fill="#c6ff72" font-size="13" font-weight="800">02</text>
+    <text x="65" y="169" fill="#f7f8fc" font-size="16" font-weight="750">Reste 1 minute</text>
+    <text x="65" y="191" fill="#b9c8c0" font-size="12">Assis ou en train de craft</text>
+    <text x="171" y="229" fill="#c6ff72" font-size="21" font-weight="800">↓</text>
+    <rect x="16" y="243" width="328" height="67" rx="10" fill="#1a2930" stroke="#506a5c"/>
+    <text x="30" y="269" fill="#c6ff72" font-size="13" font-weight="800">03</text>
+    <text x="65" y="269" fill="#f7f8fc" font-size="16" font-weight="750">Prends les buffs</text>
+    <text x="65" y="291" fill="#b9c8c0" font-size="12">Selon les objets installés</text>
+    <text x="18" y="335" fill="#d8e7d8" font-size="11" font-weight="650">Certains effets ne se cumulent pas avec</text>
+    <text x="18" y="350" fill="#d8e7d8" font-size="11" font-weight="650">les buffs de classe.</text>
+  </g>
+</svg>
