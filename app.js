@@ -6,6 +6,11 @@
   var cats = window.CATEGORIES || {};
   var state = { q: "", qRaw: "", cat: "all", hideKnown: false, savedOnly: false, expandAll: false };
   var known = loadKnown();
+  // These approved CSV rows do not contain a usable tip. Keep future approved rows visible.
+  var excludedCommunity = {
+    "c-bank-alt-pour-ceux-qui-veulent-opti-11zavhf": true,
+    "c-addon-list-1nkgmf9": true
+  };
 
   var HINTS = {
     before: "Client, réglages et noms — avant de poireauter dans la file.",
@@ -267,7 +272,7 @@
 
   function updateCount() {
     var shown = countFor(state.cat);
-    var knownN = Object.keys(known).length;
+    var knownN = tips.filter(function (t) { return known[t.id]; }).length;
     var text = shown + " sur " + tips.length + " astuces";
     if (knownN === 1) text += " · 1 dans ma liste";
     else if (knownN) text += " · " + knownN + " dans ma liste";
@@ -418,7 +423,7 @@
     tips.forEach(function (t) { if (t.id) seen[t.id] = 1; });
     var added = false;
     extra.forEach(function (t) {
-      if (!t || !t.id || seen[t.id]) return;
+      if (!t || !t.id || seen[t.id] || excludedCommunity[t.id]) return;
       seen[t.id] = 1;
       tips.push(t);
       added = true;

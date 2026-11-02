@@ -1,225 +1,245 @@
-/*
-  Base d'astuces WoW Forever.
-  Pour ajouter une astuce, copie un bloc { ... } et modifie-le. Champs :
-    id        identifiant court unique
-    cat       une des clés de CATEGORIES (en bas du fichier)
-    title     titre court
-    summary   optionnel : la ligne affichée dans la liste (sinon on prend title)
-    text      1 à 3 phrases, visibles quand on ouvre l'astuce
-    source    { url, type: "Reddit" | "YouTube" | "X" | "Guide" | "Blizzard" | "Forum", name }
-    badge     optionnel : "beta" (vu en bêta, peut changer) ou "classic" (réflexe de l'ère Classique)
-    must      optionnel : true => dans la liste À savoir
-    more      optionnel : sources en plus, même forme que source
-  Les noms affichés des catégories sont en français.
-  Les valeurs envoyées au formulaire Google restent les chaînes anglaises de community.js.
-*/
+/* Sélection éditoriale : conseils actionnables, sourcés et utiles pendant la première run.
+   Les observations de bêta sont signalées et à revérifier après le lancement. */
 window.TIPS = [
-  { id: "ruleset-friends", cat: "before", must: true,
-    title: "Accorde-toi sur le ruleset ET la faction avec ton groupe",
-    summary: "Ruleset et faction d'abord — pas de transfert hors PvP après",
-    text: "Tu ne joues qu'avec les gens de ton ruleset et de ta faction, et il n'y a pas de transfert plus tard du PvP vers Normal ou RP. Ne prends le PvP que si tu aimes vraiment te faire gank. En Normal tu peux quand même te flag avec /pvp.",
-    source: { url: "https://mein-mmo.de/en/wow-forever-beginners-guide-46-tips-to-make-your-start-noticeably-easier,1593013/", type: "Guide", name: "Mein-MMO – 46 beginner tips" } },
-  { id: "preset", cat: "before",
-    title: "Pas sûr du preset ? Prends Enhanced",
-    summary: "Pas sûr du preset ? Prends Enhanced — tu pourras changer après",
-    text: "À la première connexion tu choisis Classique ou Enhanced. Classique, c'est les modèles d'origine, pas de surbrillance de zone de quête, et les touches qui font tourner la caméra. Blizzard conseille Enhanced si tu hésites — chaque réglage se change ensuite dans les options.",
-    source: { url: "https://news.blizzard.com/article/24315820/world-of-warcraft-forever-goes-live-globally-november-4", type: "Blizzard", name: "Blizzard – Forever goes live Nov 4" } },
-  { id: "two-names", cat: "before", badge: "beta",
-    title: "Noms en deux parties : /invite Prénom Nom",
-    summary: "Invite avec le nom complet : /invite Prénom Nom",
-    text: "Les noms sont maintenant prénom + nom. Invite tes potes avec le nom complet (ou retrouve-les avec /who). Donne à tes alts des prénoms différents — en bêta, envoyer du courrier à un alt avec le même prénom a planté.",
-    source: { url: "https://wowforeverbuilds.com/news/wow-forever-beta-tips-and-tricks-40-things-to-know-before-you-log-in", type: "Guide", name: "WoW Forever Builds – 40 beta tips" } },
-  { id: "name-reservation", cat: "before",
-    title: "La réservation de noms court jusqu'au 3 nov.",
-    summary: "La réservation de noms des éditions payantes reste ouverte jusqu'au 3 nov.",
-    text: "Si la file ou une erreur t'a éjecté, réessaie — la réservation de noms des éditions payantes reste ouverte jusqu'au 3 novembre.",
-    source: { url: "https://x.com/SuperStrangeX/status/2116553402083635421", type: "X", name: "@SuperStrangeX" } },
-  { id: "amd-crash", cat: "before", badge: "beta",
-    title: "Crash au login (surtout AMD) ? Baisse l'éclairage secondaire",
-    summary: "Crash au login : Éclairage secondaire sur Faible ou Moyen",
-    text: "En bêta, des joueurs ont arrêté les crashs au login en mettant l'Éclairage secondaire sur Faible ou Moyen à l'écran de sélection du personnage. Si une manette branchée pose problème, /console GamePadEnable 0 coupe le mode manette. Pas revérifié pour le lancement.",
-    source: { url: "https://wowforeverbuilds.com/news/wow-forever-beta-tips-and-tricks-40-things-to-know-before-you-log-in", type: "Guide", name: "WoW Forever Builds – 40 beta tips" } },
-  { id: "fog-shadows", cat: "before", badge: "beta",
-    title: "Le brouillard et les god rays ? Ombres en Faible ou Moyen",
-    summary: "En bêta, le brouillard et les god rays ne sortaient qu'en ombres Faible ou Moyen",
-    text: "En bêta, le nouveau brouillard et les god rays ne s'affichaient qu'avec la Qualité des ombres sur Faible ou Moyen. Pas confirmé au lancement. Tu veux dézoomer plus loin ? /console cameraDistanceMaxZoomFactor 2.6.",
-    source: { url: "https://wowforeverbuilds.com/news/wow-forever-beta-tips-and-tricks-40-things-to-know-before-you-log-in", type: "Guide", name: "WoW Forever Builds – 40 beta tips" } },
-  { id: "fishing-bar", cat: "before", badge: "beta",
-    title: "La Pêche n'est pas dans ton grimoire",
-    summary: "La Pêche n'est pas dans le grimoire — K, puis tu la glisses sur une barre",
-    text: "Les métiers auraient leur propre fenêtre : appuie sur K et glisse Pêche (et tes autres métiers) sur une barre d'action. Vu en bêta, pas confirmé par Blizzard.",
-    source: { url: "https://wowforeverbuilds.com/news/wow-forever-beta-tips-and-tricks-40-things-to-know-before-you-log-in", type: "Guide", name: "WoW Forever Builds – 40 beta tips" } },
-  { id: "warrior-rage", cat: "race", badge: "beta",
-    title: "Guerriers : la rage vient de la vitesse de l'arme",
-    summary: "La rage du guerrier vient de la vitesse de l'arme, plus des crits",
-    text: "La rage de tes coups dépend de la vitesse de l'arme, plus des dégâts comme en Classique. La bêta disait aussi que les crits ne donnent plus de rage en plus — ce point-là n'est pas tranché, des guides disent encore le contraire. Revérifie avant de copier un guide Classique.",
-    source: { url: "https://wowforeverbuilds.com/news/wow-forever-beta-tips-and-tricks-40-things-to-know-before-you-log-in", type: "Guide", name: "WoW Forever Builds – 40 beta tips" } },
-  { id: "caster-wands", cat: "race", badge: "beta",
-    title: "Casters : les baguettes ne scalent plus avec la puissance des sorts",
-    summary: "Les baguettes ne scalent plus — compare les dégâts de la baguette elle-même",
-    text: "En début de bêta les baguettes scalaient avec la puissance des sorts, mais le build du 24 septembre a retiré ça — compare les dégâts propres de la baguette. Les armes de caster portent maintenant de la puissance des sorts, et le bonus aux soins donne aussi 1/3 en bonus de dégâts.",
-    source: { url: "https://wofwforever.com/en/guides/wow-forever-spell-power-scaling/", type: "Guide", name: "WoW Forever Outpost – Spell power & wands" } },
-  { id: "skyborne-attuned", cat: "race",
-    title: "Skyborne : rafraîchis Attuned ou Charged à chaque ligne ley",
-    summary: "Rafraîchis Attuned ou Charged à chaque ligne ley — le buff durerait 1 h",
-    text: "Lancer Read Ley Line (High Order) sur une ligne ley, ou Skysight (Windshaper) sur une convergence, te bufferait 1 heure et ça survivrait à la mort : double regen, ou 30 % de vitesse en cooldown. Le racial officiel annonce plutôt Skysight à +10 % de course, pas 30 % — le 30 % et la durée sont à prendre avec des pincettes. Walk on Air sert à glisser des falaises au lieu de les contourner.",
-    source: { url: "https://www.stillsixty.com/guides/skyborne", type: "Guide", name: "stillsixty – Skyborne guide" } },
-  { id: "zephras-finish", cat: "race",
-    title: "Finis l'île de Zephras avant de monter dans le skycutter",
-    summary: "Finis l'île de Zephras avant le skycutter — il ne te ramènerait pas",
-    text: "Au niveau 12, l'histoire t'envoie sur le continent et, d'après les guides, ne te ramène pas — ce retour manquant n'est pas confirmé. Les Skyborne ont besoin du Heroic Pack ou plus ; les autres races n'ont besoin que de l'abonnement.",
-    source: { url: "https://www.stillsixty.com/guides/skyborne", type: "Guide", name: "stillsixty – Skyborne guide" } },
-  { id: "zephras-tornado", cat: "race", badge: "beta",
-    title: "Traverse les tornades de Zephras pour +40 % de vitesse",
-    summary: "Traverse les tornades de Zephras : +40 % pendant 5 minutes (bêta)",
-    text: "En bêta, de petits cyclones sur l'île de Zephras (même à Valanaar) donnaient Bénédiction de Zephras : +40 % de vitesse de course pendant 5 minutes. Les Windstones ramassées sur l'île feraient office de mini potions de régénération. Pas confirmé hors bêta.",
-    source: { url: "https://www.reddit.com/r/wowforever/comments/1wochdd/skyborne_zephras_review/", type: "Reddit", name: "r/wowforever – Skyborne + Zephras review" } },
-  { id: "cooking-xp", cat: "leveling", must: true,
-    title: "Mange de la cuisine : +5 % d'XP sur les kills",
-    summary: "Mange un plat cuisiné pour +5 % d'XP sur les kills",
-    text: "Lance Cuisine tout de suite — la nourriture Bien nourri donne +5 % d'XP sur les kills. Cuisine la viande des bêtes que tu tues déjà : une recette pas chère de zone de départ qui donne le buff suffit, pas besoin d'un festin.",
-    source: { url: "https://www.reddit.com/r/wowforever/comments/1wjnbda/wow_forever_beta_tips_spoilers/", type: "Reddit", name: "r/wowforever – Beta tips thread" },
-    more: [ { url: "https://www.youtube.com/watch?v=TmxLWnqOkns&t=26s", type: "YouTube", name: "Fairbanks – 6 Launch Day Tips" } ] },
-  { id: "sleeping-bag", cat: "leveling", must: true,
-    title: "Prends le Cozy Sleeping Bag dès le niveau 14",
-    summary: "Le Cozy Sleeping Bag se prend à partir du niveau 14",
-    text: "Ça commence au Nailed Plank (Marche de l'Ouest 37,50 – Alliance) ou aux Burned-Out Remains (Tarides 46,74 – Horde). Dormir donne +1 % d'XP par minute jusqu'à 3 %, ça survit à la mort, ça compte comme reposé, et ton groupe peut s'en servir (1 h de recharge).",
-    source: { url: "https://www.warcrafttavern.com/forever/guides/cozy-sleeping-bag/", type: "Guide", name: "Warcraft Tavern – Cozy Sleeping Bag" } },
-  { id: "camp-strangers", cat: "leveling",
-    title: "Assieds-toi au feu de n'importe qui pour 1 h de buffs",
-    summary: "Une minute au camp de quelqu'un d'autre, et ses buffs tiennent une heure",
-    text: "Pas besoin du métier ni d'une invite de groupe : assieds-toi ou craft au camp d'un autre joueur pendant 1 minute pour prendre ses buffs de camp pendant une heure. Méfie-toi sur les rulesets PvP. Vu par des joueurs, pas une règle officielle.",
-    source: { url: "https://x.com/signs68664/status/2110808350938235174", type: "X", name: "@signs68664" } },
-  { id: "layer-invite", cat: "leveling", must: true, badge: "beta",
-    title: "Accepte la quête D'ABORD, ensuite invite",
-    summary: "Accepte la quête d'abord, puis invite — l'invite peut te changer de layer",
-    text: "Une invite de groupe peut te balancer sur un autre layer — en bêta, des joueurs ont perdu un PNJ d'escorte ou un pop rare comme ça. Ne lance pas un pull et n'ouvre pas un coffre pendant le décompte « World Refresh ». Le chat de zone ne parle qu'à ton layer.",
-    source: { url: "https://wowforeverbuilds.com/news/wow-forever-beta-tips-and-tricks-40-things-to-know-before-you-log-in", type: "Guide", name: "WoW Forever Builds – 40 beta tips" } },
-  { id: "res-sickness", cat: "leveling", badge: "beta",
-    title: "Cours jusqu'à ton corps plutôt que le gardien des âmes",
-    summary: "Corpse run. En bêta, le mal de la résurrection durait 10 min même au niveau 10",
-    text: "En bêta, le mal de la résurrection durait 10 minutes même au niveau 10 (noté comme un bug). Cours jusqu'à ton corps, sauf s'il est vraiment inatteignable.",
-    source: { url: "https://wowforeverbuilds.com/news/wow-forever-beta-tips-and-tricks-40-things-to-know-before-you-log-in", type: "Guide", name: "WoW Forever Builds – 40 beta tips" } },
-  { id: "bag-quests", cat: "leveling",
-    title: "Chaque race a une quête de sac 6 places tôt",
-    summary: "Chaque race a une quête de sac 6 places au début",
-    text: "Orc/Troll : quête de la tour de guet au niveau 4. Tauren : « Une humble tâche ». Mort-vivant : la veille mortuaire à Brill. Elfe de la nuit : Aldia à Dolanaar. Nain/Gnome : Grund Drokda à Villamar. Skyborne : « The Problem With Prideclaws ». Les humains ont la plus dure, via un livre « Vermin ». Quand tu upgrades plus tard, envoie tes vieux sacs non liés à un alt au lieu de les vendre.",
-    source: { url: "https://mein-mmo.de/en/wow-forever-beginners-guide-46-tips-to-make-your-start-noticeably-easier,1593013/2/", type: "Guide", name: "Mein-MMO – XP hunting tips" },
-    more: [ { url: "https://www.youtube.com/watch?v=TmxLWnqOkns&t=108s", type: "YouTube", name: "Fairbanks – 6 Launch Day Tips" } ] },
-  { id: "library-books", cat: "leveling",
-    title: "Ramasse les livres de bibliothèque pour un collier et un anneau",
-    summary: "Rends les livres : 10 pour un collier, 20 pour un anneau",
-    text: "Des livres dispersés en Azeroth se rendent à la bibliothèque de ta faction, quelle que soit la classe : 10 livres = un collier, 20 livres = un anneau. Les mages débloquent en plus le métier Research.",
-    source: { url: "https://www.warcrafttavern.com/forever/news/collect-books-for-powerful-rewards-in-wow-forever/", type: "Guide", name: "Warcraft Tavern – Library books" } },
-  { id: "boats", cat: "leveling", badge: "beta",
-    title: "Connais tes bateaux",
-    summary: "Sombrivage a un bateau pour Hurlevent ; celui de Menethil continue vers Austrivage",
-    text: "Sombrivage a un bateau pour Hurlevent au bout du quai ; le bateau Sombrivage–Port de Menethil continue vers Austrivage. Les zeppelins Skyborne passeraient par Dalaran, avec un portail permanent vers Hurlevent mais sans hôtel des ventes, banque ni maître de vol — vu en bêta, pas revérifié.",
-    source: { url: "https://www.reddit.com/r/wowforever/comments/1wjnbda/wow_forever_beta_tips_spoilers/", type: "Reddit", name: "r/wowforever – Beta tips thread" } },
-  { id: "legacy-talented", cat: "leveling",
-    title: "Points Legacy : Talented est pour ton ALT, pas ton main",
-    summary: "Well Rested sur le perso qui a passé 25, Talented sur les alts",
-    text: "Les points se gagnent sur tout le compte (les premiers au niveau 25 de classe et à 150 de métier) et chaque perso en dépense jusqu'à 16. Talented donnerait des points de talent dès le niveau 5 — inutile sur le perso qui a déjà passé 25, donc Well Rested là-dessus et Talented sur les alts. Ces deux noms d'avantages ne sont pas dans le post Blizzard : le plafond de 16, lui, oui.",
-    source: { url: "https://wowforevertierlist.com/legacy/perks/best-for-leveling", type: "Guide", name: "WoW Forever Tier List – Legacy perks" } },
-  { id: "pace", cat: "leveling",
-    title: "Calibre tes attentes : ~20 h pour le niveau 20",
-    summary: "Environ 20,5 h de /played pour le 20 — pas de panique si ça semble lent",
-    text: "En bêta, les joueurs mettaient environ 20,5 heures de /played pour atteindre 20. Les estimations jusqu'au 60 tournent autour de 150 heures, mais la bêta s'est arrêtée au 30 : ce chiffre-là est une extrapolation. Pas de panique si ton groupe a l'air « lent ».",
-    source: { url: "https://wowforeverbuilds.com/leveling/fastest-leveling", type: "Guide", name: "WoW Forever Builds – Fastest leveling" } },
-  { id: "secondaries", cat: "professions", must: true,
-    title: "Cuisine, Pêche et Secourisme sur chaque perso",
-    summary: "Mets Cuisine, Pêche et Secourisme sur chaque personnage",
-    text: "Les potions de soins sont passées d'Alchimie à Secourisme, les bandages sont le seul soin de pas mal de classes avant 20, la nourriture cuisinée donne +5 % d'XP sur les kills, et Cuisine pose le feu de camp.",
-    source: { url: "https://www.wowhead.com/forever/guide/wow-forever-profession-pairings-by-class-35082", type: "Guide", name: "Wowhead – Profession pairings" } },
-  { id: "camp-objects", cat: "professions",
-    title: "Chaque métier apporte un objet de camp",
-    summary: "Chaque métier ajoute un objet à ton camp, et un buff d'une heure",
-    text: "Chaque métier ajoute un objet à ton camp — par exemple le Fish Bowl de Pêche (8 % de stats) ou la tente de camp du Travail du cuir (de l'XP reposé qui vaut 5 % d'un niveau). Assieds-toi ou craft au feu de camp pendant 1 minute pour prendre les buffs de camp pendant 1 heure.",
-    source: { url: "https://www.wowhead.com/forever/guide/wow-forever-profession-pairings-by-class-35082", type: "Guide", name: "Wowhead – Profession pairings" } },
-  { id: "fish-bowl", cat: "professions", badge: "beta",
-    title: "Fish Bowl : 8 % de stats pour 1 poisson et une fiole",
-    summary: "Le Fish Bowl coûterait 1 goujon brillant et une fiole pour 8 % de stats",
-    text: "L'objet de camp de Pêche ne coûterait que 1 Goujon brillant et 1 fiole, pour un buff de 8 % aux stats. Chiffres vus en bêta, pas confirmés.",
-    source: { url: "https://www.reddit.com/r/wowforever/comments/1wjnbda/wow_forever_beta_tips_spoilers/", type: "Reddit", name: "r/wowforever – Beta tips thread" } },
-  { id: "waylaid", cat: "professions",
-    title: "Ne supprime jamais une caisse Waylaid",
-    summary: "Ne jette jamais une caisse Waylaid — remplis-la et rends-la",
-    text: "Remplis-la avec un des lots de matériaux indiqués et rends-la aux Trois chemins, dans les Carmines (Alliance, Marcy Baker), ou à l'ouest de la Croisée (Horde, Dokimi). Le Merchant's Favor achète des recettes liées quand ramassées ; ta première caisse débloque aussi une quête Shipping Label (50 Favor + 2 000 de réput). Les caisses de début tombent sur des mobs bas niveau et demandent des trucs comme 20 minerais de cuivre, de la Pacifique ou du cuir léger — vérifie avant de vendre ça, ou vends la caisse à l'hôtel des ventes.",
-    source: { url: "https://urgametips.com/wow-forever/waylaid-crates/", type: "Guide", name: "UrGameTips – Waylaid Crates" },
-    more: [ { url: "https://www.youtube.com/watch?v=TmxLWnqOkns&t=193s", type: "YouTube", name: "Fairbanks – 6 Launch Day Tips" } ] },
-  { id: "gathering-tools", cat: "professions",
-    title: "Achète tes outils de récolte — et le sac à composants",
-    summary: "Achète ta pioche de mineur ou ton couteau à dépecer, plus le sac 4 places",
-    text: "Choisis tes métiers avant le lancement et prends la pioche de mineur ou le couteau à dépecer dès que tu les apprends, pour ne pas passer à côté des filons et des bêtes. Le sac à composants 4 places du marchand général (25 pièces de cuivre) sort les composants de tes sacs normaux dès le début.",
-    source: { url: "https://www.youtube.com/watch?v=TmxLWnqOkns&t=157s", type: "YouTube", name: "Fairbanks – 6 Launch Day Tips" } },
-  { id: "trainer-budget", cat: "professions",
-    title: "Prévois le budget du prochain maître",
-    summary: "Prévois le prochain maître — 10 % moins cher là où tu es Honoré",
-    text: "Avant un achat coup de tête, pense aux sorts et aux rangs de métier que tu voudras au prochain maître (un addon comme What's Training montre ce qui arrive et le prix). L'apprentissage est 10 % moins cher dans une ville où tu es Honoré, donc apprends là où ta réput est la plus haute.",
-    source: { url: "https://www.youtube.com/watch?v=TmxLWnqOkns&t=232s", type: "YouTube", name: "Fairbanks – 6 Launch Day Tips" } },
-  { id: "early-gold", cat: "professions", badge: "beta",
-    title: "Or du début : zappe les rangs de maître inutiles",
-    summary: "N'achète pas les rangs de sorts inutiles, et loot chaque corps",
-    text: "N'achète pas les rangs de sorts que tu n'utiliseras pas, et vends les drops liés quand équipés et les verts craft. En bêta, les filons se tapaient plusieurs fois, et il n'y aurait pas d'area loot — loot chaque corps. Ces deux derniers points ne sont pas confirmés hors bêta.",
-    source: { url: "https://wowforeverbuilds.com/news/wow-forever-beta-tips-and-tricks-40-things-to-know-before-you-log-in", type: "Guide", name: "WoW Forever Builds – 40 beta tips" } },
-  { id: "no-token", cat: "professions",
-    title: "L'or compte vraiment — pas de jeton, pas de boost",
-    summary: "Pas de Jeton WoW ni de boost — ne crame pas ton or dans des upgrades minuscules",
-    text: "Pas de Jeton WoW, pas de boost payant. Le GDKP serait banni, mais ce point n'est pas confirmé. Les sacs, l'apprentissage, les voyages et la monture sortent du même porte-monnaie — ne crame pas ton or dans des upgrades ridicules à l'hôtel des ventes.",
-    source: { url: "https://www.masterofwarcraft.net/2026/09/wow-forever-beginners-guide.html", type: "Guide", name: "Master of Warcraft – Beginner's guide" } },
-  { id: "dungeon-once", cat: "group", must: true,
-    title: "Fais chaque donjon UNE fois, avec toutes ses quêtes",
-    summary: "Fais chaque donjon une fois, après avoir pris toutes les quêtes",
-    text: "L'XP des mobs chute sec après le premier clear, et le bonus d'XP des quêtes de donjon a été coupé de moitié le 1er octobre. Prends toutes les quêtes d'abord, fais-le une fois avec un groupe proche de ton niveau, puis retourne quêter.",
-    source: { url: "https://wowforeverbuilds.com/leveling/fastest-leveling", type: "Guide", name: "WoW Forever Builds – Fastest leveling" } },
-  { id: "dungeon-data", cat: "group", badge: "beta",
-    title: "Les chiffres : 1 run + les quêtes, ça gagne largement",
-    summary: "Un run plus les quêtes, c'était le plus rapide jusqu'au 28",
-    text: "Un testeur de bêta a chronométré une montée jusqu'au niveau 28 : un run de BFD plus les quêtes était le plus rapide ; quêter seulement prenait environ 1,5× plus longtemps, et level uniquement en donjon 2,2 à 2,9× plus longtemps. Ça date d'autour du nerf d'XP de donjon d'octobre, donc à relativiser.",
-    source: { url: "https://us.forums.blizzard.com/en/wow/t/some-data-on-the-possible-leveling-journeys-dungeon-questing-and-mixing-them/2395335", type: "Forum", name: "Blizzard forums – Leveling route data" } },
-  { id: "hall-of-thanes", cat: "group", badge: "beta",
-    title: "Le Hall of Thanes est sous Forgefer",
-    summary: "Le Hall of Thanes, c'est le couloir à gauche du trône de Magni, à Forgefer",
-    text: "Un nouveau donjon bas niveau (vers 13-14). Entre par le couloir plein de toiles, à gauche de la salle du trône de Magni. Sa quête « Old Ironforge Incursion » part d'une Dark Iron Map qui tombe sur les Dark Iron Spies, à Dun Morogh.",
-    source: { url: "https://wowforeverbuilds.com/news/wow-forever-beta-tips-and-tricks-40-things-to-know-before-you-log-in", type: "Guide", name: "WoW Forever Builds – 40 beta tips" } },
-  { id: "hc-dungeons", cat: "group", badge: "beta",
-    title: "Horde : RFC, Ruines de Lordaeron, Cavernes des Lamentations",
-    summary: "Horde, de 14 à 20 : RFC, Ruines de Lordaeron et Cavernes des Lamentations, une fois chacun",
-    text: "Un testeur Hardcore de la bêta est passé de 14 à 20 surtout en faisant ces trois donjons une fois chacun avec leurs quêtes (avant les changements d'XP de donjon d'octobre).",
-    source: { url: "https://www.reddit.com/r/wowhardcore/comments/1wlrmhe/couple_of_hc_observations_from_the_forever_beta/", type: "Reddit", name: "r/wowhardcore – Forever beta observations" } },
-  { id: "no-summon", cat: "group", badge: "beta",
-    title: "Les pierres d'invocation sont coupées — tout le monde marche",
-    summary: "Pas de pierre d'invocation — prévois la marche avant de grouper",
-    text: "Prévois le trajet avant de former le groupe. Les tanks et les heals manquent (un voleur a attendu 3 heures pour les Mortemines), donc amène tes potes ou tank toi-même.",
-    source: { url: "https://wowforeverbuilds.com/news/wow-forever-beta-tips-and-tricks-40-things-to-know-before-you-log-in", type: "Guide", name: "WoW Forever Builds – 40 beta tips" } },
-  { id: "builtin-ui", cat: "addons",
-    title: "Apprends l'UI intégrée avant d'installer 20 addons",
-    summary: "L'UI intégrée aurait déjà sacs combinés, mètre, cooldowns, swing timer et pings",
-    text: "Forever embarquerait les sacs combinés, un mètre de dégâts, un gestionnaire de cooldowns, un swing timer et les pings. Le sac unique, lui, fait partie du preset Enhanced. Le reste de cette liste n'est pas confirmé par Blizzard. N'ajoute un addon que pour un problème que tu sais nommer.",
-    source: { url: "https://www.masterofwarcraft.net/2026/09/wow-forever-beginners-guide.html", type: "Guide", name: "Master of Warcraft – Beginner's guide" } },
-  { id: "forever-files", cat: "addons",
-    title: "Prends le fichier marqué « Forever »",
-    summary: "Prends le fichier d'addon marqué Forever — le Classic Era ne se charge pas",
-    text: "Forever tourne sur le client moderne, donc les fichiers d'addon Classic Era ne se chargent pas. Questie marche mais a des trous sur les nouvelles quêtes. WeakAuras, TSM et OmniCC n'étaient pas prêts à un moment donné — ça bouge. Coche « charger les addons périmés » à la sélection du personnage si besoin.",
-    source: { url: "https://theforeverguides.com/addons/", type: "Guide", name: "The Forever Guides – Addon status" } },
-  { id: "weird-loot", cat: "mistakes",
-    title: "Lis le loot bizarre avant de le vendre",
-    summary: "Lis les objets bizarres avant de les vendre — certains font partie d'un set",
-    text: "Forever a retravaillé plein d'objets. L'anneau First Mate Band appartiendrait à un set dont l'autre pièce demande le niveau 60 — mets les pièces de set bizarres à la banque le temps de comprendre. L'exemple précis de cet anneau n'a pas été revérifié.",
-    source: { url: "https://www.masterofwarcraft.net/2026/09/wow-forever-beginners-guide.html", type: "Guide", name: "Master of Warcraft – Beginner's guide" } },
-  { id: "legacy-homework", cat: "mistakes",
-    title: "Ne fais pas du Legacy des devoirs",
-    summary: "Chaque perso ne dépense que 16 points Legacy — ne les farm pas en semaine 1",
-    text: "Chaque personnage ne peut dépenser que 16 points Legacy, donc joue au lieu de farm les défis Legacy dès la première semaine.",
-    source: { url: "https://www.masterofwarcraft.net/2026/09/wow-forever-beginners-guide.html", type: "Guide", name: "Master of Warcraft – Beginner's guide" } }
+  {
+    "id": "ruleset-friends",
+    "cat": "before",
+    "title": "Choisis le même ruleset et la même faction que tes amis",
+    "summary": "Même ruleset et même faction que ton groupe avant de créer ton personnage",
+    "text": "Mets-toi d’accord avec tes amis sur le ruleset et la faction avant de créer ton personnage. Les transferts depuis un royaume PvP vers Normal ou RP ne sont pas prévus. Le mode Hardcore arrivera plus tard.",
+    "source": {
+      "url": "https://news.blizzard.com/en-us/article/24302070/choose-your-ruleset-in-world-of-warcraft-forever",
+      "type": "Blizzard",
+      "name": "Blizzard – Choose your ruleset"
+    },
+    "must": true
+  },
+  {
+    "id": "preset",
+    "cat": "before",
+    "title": "Si tu hésites, choisis le preset Enhanced",
+    "summary": "Prends Enhanced si tu hésites : tous ses réglages se changent ensuite",
+    "text": "Au premier lancement, le jeu propose les presets Classic et Enhanced. Enhanced apporte les aides visuelles et les commandes modernes ; chaque option peut être modifiée ensuite dans les réglages.",
+    "source": {
+      "url": "https://news.blizzard.com/en-us/article/24315820/world-of-warcraft-forever-goes-live-globally-november-4",
+      "type": "Blizzard",
+      "name": "Blizzard – Forever goes live Nov 4"
+    }
+  },
+  {
+    "id": "cooking-xp",
+    "cat": "leveling",
+    "title": "Cuisine un plat pour le bonus d’XP des ennemis",
+    "summary": "Un plat cuisiné donne +5 % d’XP sur les ennemis vaincus",
+    "text": "Apprends Cuisine tôt et garde un plat cuisiné pour profiter du bonus Bien nourri. Le +5 % concerne l’XP des ennemis tués, pas celle des quêtes.",
+    "source": {
+      "url": "https://www.warcrafttavern.com/forever/news/cooked-food-provides-an-xp-buff-in-world-of-warcraft-forever/",
+      "type": "Guide",
+      "name": "Warcraft Tavern – Cooked food XP buff"
+    },
+    "more": [
+      {
+        "url": "https://www.youtube.com/watch?v=TmxLWnqOkns&t=26s",
+        "type": "YouTube",
+        "name": "Fairbanks – 6 Launch Day Tips"
+      }
+    ],
+    "badge": "beta",
+    "must": true
+  },
+  {
+    "id": "sleeping-bag",
+    "cat": "leveling",
+    "title": "Récupère le Cozy Sleeping Bag dès le niveau 14",
+    "summary": "Au niveau 14, va chercher le Cozy Sleeping Bag pour son bonus d’XP",
+    "text": "La suite de quêtes du Cozy Sleeping Bag devient accessible dès le niveau 14. Le sac donne un bonus d’XP reposée utile pendant ta progression ; consulte le guide pour les points de départ Alliance et Horde.",
+    "source": {
+      "url": "https://www.wowhead.com/forever/guide/cozy-sleeping-bag-locations-rewards",
+      "type": "Guide",
+      "name": "Wowhead – Cozy Sleeping Bag"
+    },
+    "must": true
+  },
+  {
+    "id": "camp-strangers",
+    "cat": "leveling",
+    "title": "Profite des buffs de camp, même chez les autres",
+    "summary": "Reste une minute au camp : tu peux récupérer les buffs de ses objets",
+    "text": "Assieds-toi ou travaille pendant une minute près d’un feu de camp pour recevoir les effets des objets installés, même si le camp appartient à un autre joueur. Chaque métier peut apporter son objet ; certains effets ne se cumulent pas avec des buffs de classe équivalents. Le Fish Bowl de Pêche donne notamment +8 % aux statistiques.",
+    "source": {
+      "url": "https://news.blizzard.com/en-us/article/24301516/gather-around-the-campfire-in-world-of-warcraft-forever",
+      "type": "Blizzard",
+      "name": "Blizzard – Gather Around the Campfire"
+    },
+    "must": true
+  },
+  {
+    "id": "bag-quests",
+    "cat": "leveling",
+    "title": "Prends le sac de ta zone de départ",
+    "summary": "Cherche la quête de sac dans ta zone de départ avant d’acheter des sacs",
+    "text": "Chaque race a une quête de début qui peut donner un sac. Vérifie celle de ta zone avant de dépenser ton premier or dans un sac de marchand ; les récompenses ont changé pendant la bêta.",
+    "source": {
+      "url": "https://www.method.gg/wow-forever/best-early-bags-in-wow-forever-crafted-bags-quest-bags-vendor-bags-and-more",
+      "type": "Guide",
+      "name": "Method – Best early bags"
+    },
+    "more": [
+      {
+        "url": "https://www.youtube.com/watch?v=TmxLWnqOkns&t=108s",
+        "type": "YouTube",
+        "name": "Fairbanks – 6 Launch Day Tips"
+      }
+    ],
+    "badge": "beta"
+  },
+  {
+    "id": "library-books",
+    "cat": "leveling",
+    "title": "Garde les livres trouvés en Azeroth",
+    "summary": "Rends 10 livres pour un collier, puis 20 pour un anneau",
+    "text": "Les livres de bibliothèque sont dispersés dans le monde et peuvent être collectés par toutes les classes. Rapporte-les à la bibliothèque de ta faction : les premiers paliers donnent un collier puis un anneau.",
+    "source": {
+      "url": "https://www.wowhead.com/forever/news/everyone-can-collect-books-for-rewards-in-wow-forever-383141",
+      "type": "Guide",
+      "name": "Wowhead – Collect books for rewards"
+    },
+    "badge": "beta"
+  },
+  {
+    "id": "secondaries",
+    "cat": "professions",
+    "title": "Apprends Cuisine, Pêche et Secourisme",
+    "summary": "Prends les trois métiers secondaires sur chaque personnage",
+    "text": "Cuisine, Pêche et Secourisme ne prennent pas tes emplacements de métiers principaux. Cuisine sert notamment au bonus d’XP des plats, et Secourisme fabrique désormais des potions de soin en plus des bandages.",
+    "source": {
+      "url": "https://news.blizzard.com/en-us/article/24301516/gather-around-the-campfire-in-world-of-warcraft-forever",
+      "type": "Blizzard",
+      "name": "Blizzard – Gather Around the Campfire"
+    },
+    "more": [
+      {
+        "url": "https://www.wowhead.com/forever/guide/professions/first-aid/overview",
+        "type": "Guide",
+        "name": "Wowhead – First Aid overview"
+      }
+    ],
+    "must": true
+  },
+  {
+    "id": "waylaid",
+    "cat": "professions",
+    "title": "Vérifie une caisse Waylaid avant de la jeter",
+    "summary": "Une caisse Waylaid peut valoir le coup : regarde son coût et sa récompense",
+    "text": "Quand tu trouves une caisse Waylaid, regarde les matériaux demandés et la récompense avant de la vendre ou de l’abandonner. Certaines caisses se remplissent facilement avec des ressources de début de jeu ; d’autres coûtent trop cher pour ton personnage.",
+    "source": {
+      "url": "https://www.wowhead.com/forever/guide/azeroth-commerce-authority-reputation-professions",
+      "type": "Guide",
+      "name": "Wowhead – Azeroth Commerce Authority"
+    },
+    "more": [
+      {
+        "url": "https://www.youtube.com/watch?v=TmxLWnqOkns&t=193s",
+        "type": "YouTube",
+        "name": "Fairbanks – 6 Launch Day Tips"
+      }
+    ],
+    "badge": "beta"
+  },
+  {
+    "id": "gathering-tools",
+    "cat": "professions",
+    "title": "Achète tes outils de récolte dès que tu apprends le métier",
+    "summary": "Minage : pioche. Dépeçage : couteau. Prends l’outil avant de partir",
+    "text": "Après avoir appris Minage ou Dépeçage, vérifie que tu as la pioche ou le couteau requis. Sans l’outil, tu risques de passer devant des filons ou des bêtes sans pouvoir les récolter.",
+    "source": {
+      "url": "https://www.icy-veins.com/wow-forever/professions-overview",
+      "type": "Guide",
+      "name": "Icy Veins – Professions overview"
+    },
+    "more": [
+      {
+        "url": "https://www.wowhead.com/forever/guide/professions/skinning/overview-leveling",
+        "type": "Guide",
+        "name": "Wowhead – Skinning overview"
+      }
+    ]
+  },
+  {
+    "id": "dungeon-once",
+    "cat": "group",
+    "title": "Prends les quêtes avant de partir en donjon",
+    "summary": "Rassemble les quêtes du donjon avant ton premier passage",
+    "text": "Le premier passage avec ses quêtes peut être intéressant pour progresser. Prépare ces quêtes et un groupe proche de ton niveau ; le farm répété des donjons n’est pas pensé comme la voie la plus rapide pour gagner de l’XP, et l’équilibrage peut encore évoluer.",
+    "source": {
+      "url": "https://www.pcgamer.com/games/world-of-warcraft/blizzard-refuses-to-let-world-of-warcraft-forevers-dungeons-become-the-fastest-way-to-grind-xp-we-need-to-hold-firm-on-these-balance-adjustments/",
+      "type": "Guide",
+      "name": "PC Gamer – Dungeon XP balance"
+    },
+    "must": true
+  },
+  {
+    "id": "no-summon",
+    "cat": "group",
+    "title": "Prévois le trajet jusqu’au donjon",
+    "summary": "Pas d’invocation aux pierres : le groupe doit se rendre à l’entrée",
+    "text": "Les pierres de rencontre ne téléportent pas les membres du groupe. Avant de former l’équipe, vérifie où se trouve l’entrée et prévois le temps de trajet de chacun.",
+    "source": {
+      "url": "https://www.wowhead.com/forever/news/no-summoning-stones-and-mount-cost-changes-kotaku-interview-382944",
+      "type": "Guide",
+      "name": "Wowhead – No summoning stones"
+    },
+    "badge": "beta",
+    "must": true
+  },
+  {
+    "id": "forever-files",
+    "cat": "addons",
+    "title": "Installe la version Forever de tes addons",
+    "summary": "Télécharge le fichier marqué Forever pour chaque addon",
+    "text": "Les fichiers d’addons Classic Era ne sont pas automatiquement compatibles avec le client Forever. Vérifie la version indiquée sur la page de téléchargement et la date de mise à jour avant d’installer un addon.",
+    "source": {
+      "url": "https://theforeverguides.com/addons/",
+      "type": "Guide",
+      "name": "The Forever Guides – Addon status"
+    }
+  }
 ];
 
 window.CATEGORIES = {
-  before:      { label: "Avant le lancement / réglages et UI", short: "Avant le lancement", icon: "⚙️" },
-  race:        { label: "Choix de race et de classe",          short: "Race et classe",    icon: "🛡️" },
-  leveling:    { label: "Route de level et quêtes",            short: "Level",             icon: "🗺️" },
-  professions: { label: "Métiers et or",                       short: "Or",                icon: "⚒️" },
-  group:       { label: "Groupe et donjons",                   short: "Groupes",           icon: "⚔️" },
-  addons:      { label: "Addons",                              short: "Addons",            icon: "🧩" },
-  mistakes:    { label: "Erreurs à éviter",                    short: "Erreurs",           icon: "💀" }
+  "before": {
+    "label": "Avant le lancement / réglages et UI",
+    "short": "Avant le lancement",
+    "icon": "⚙️"
+  },
+  "race": {
+    "label": "Choix de race et de classe",
+    "short": "Race et classe",
+    "icon": "🛡️"
+  },
+  "leveling": {
+    "label": "Route de level et quêtes",
+    "short": "Level",
+    "icon": "🗺️"
+  },
+  "professions": {
+    "label": "Métiers et or",
+    "short": "Or",
+    "icon": "⚒️"
+  },
+  "group": {
+    "label": "Groupe et donjons",
+    "short": "Groupes",
+    "icon": "⚔️"
+  },
+  "addons": {
+    "label": "Addons",
+    "short": "Addons",
+    "icon": "🧩"
+  },
+  "mistakes": {
+    "label": "Erreurs à éviter",
+    "short": "Erreurs",
+    "icon": "💀"
+  }
 };
