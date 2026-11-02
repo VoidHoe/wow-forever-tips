@@ -46,6 +46,33 @@
     if (text != null) e.textContent = text;
     return e;
   }
+  function appendLinkedText(p, text) {
+    var value = String(text || "");
+    var urls = /https?:\/\/[^\s<>"']+/gi;
+    var end = 0;
+    var match;
+    while ((match = urls.exec(value))) {
+      var url = match[0].replace(/[.,;:!?]+$/, "");
+      // Keep balanced parentheses within URLs, but leave surrounding ones as text.
+      while (url.endsWith(")") && (url.match(/\)/g) || []).length > (url.match(/\(/g) || []).length) {
+        url = url.slice(0, -1);
+      }
+      var parsed;
+      try { parsed = new URL(url); } catch (_) { continue; }
+      p.appendChild(document.createTextNode(value.slice(end, match.index)));
+      var host = parsed.hostname.replace(/^www\./, "");
+      var label = host === "curseforge.com" ? "Voir sur CurseForge" : "Ouvrir le lien · " + host;
+      var a = el("a", "tip-link-button", label);
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.title = url;
+      a.appendChild(el("span", "sr", " (s’ouvre dans un nouvel onglet)"));
+      p.appendChild(a);
+      end = match.index + url.length;
+    }
+    p.appendChild(document.createTextNode(value.slice(end)));
+  }
   function iconEl(name) {
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("viewBox", "0 0 24 24");
@@ -162,14 +189,14 @@
     var start = 0;
     var match;
     while ((match = pattern.exec(value))) {
-      parent.appendChild(document.createTextNode(value.slice(start, match.index)));
+      appendLinkedText(parent, value.slice(start, match.index));
       var inline = el("span", "inline-snippet");
       inline.appendChild(el("code", "inline-code", match[1]));
       inline.appendChild(copyButton(match[1], true));
       parent.appendChild(inline);
       start = pattern.lastIndex;
     }
-    parent.appendChild(document.createTextNode(value.slice(start)));
+    appendLinkedText(parent, value.slice(start));
   }
   function codeBlock(value, label) {
     var block = el("div", "code-block");
