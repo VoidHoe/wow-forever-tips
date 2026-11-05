@@ -53,9 +53,19 @@
     </div>
 
     <div class="field">
-      <label for="image">Image <span class="optional">facultative</span></label>
-      <input id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="image-hint image-error">
-      <p class="hint" id="image-hint">JPG, PNG ou WebP, 5 Mo maximum. L'image est hébergée publiquement dès l'envoi. Décris dans le détail toute information importante visible sur l'image.</p>
+      <label for="image">Ajouter une image <span class="optional">facultatif</span></label>
+      <div class="dropzone" id="image-drop">
+        <input id="image" name="image" type="file" accept="image/*" aria-describedby="image-hint image-error">
+        <p class="dropzone-copy" aria-hidden="true"><strong>Ajouter une image</strong><span>Glisse-la ici, colle-la, ou clique pour parcourir.</span></p>
+      </div>
+      <div class="image-preview" id="image-preview" hidden>
+        <img id="image-thumb" alt="Aperçu de l'image jointe" width="96" height="96">
+        <div class="image-preview-actions">
+          <p class="hint" id="image-preview-note">Aperçu, prêt à l'envoi.</p>
+          <button type="button" class="btn ghost" id="image-remove">Retirer l'image</button>
+        </div>
+      </div>
+      <p class="hint" id="image-hint">Facultatif. 10 Mo maximum. Au-delà de 1600 px de large, l'image est réduite en JPEG avant l'envoi. Décris dans le détail toute information importante visible sur l'image.</p>
       <p class="field-error" id="image-error" hidden></p>
     </div>
 
@@ -65,6 +75,7 @@
       <p class="hint">Enregistré dans ce navigateur pour ne pas le retaper. Affiché « par nom » une fois l'astuce approuvée.</p>
     </div>
 
+    <p class="hint" id="image-status" role="status" hidden></p>
     <div class="form-actions">
       <button type="submit" class="btn" id="send">Envoyer l'astuce</button>
     </div>

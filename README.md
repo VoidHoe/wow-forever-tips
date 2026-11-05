@@ -35,15 +35,16 @@ Open `tips.js`, copy any `{ ... }` block in `window.TIPS`, paste it, and edit:
   must: true,                    // optional: included in Must know
   more: [ { url: "https://...", type: "YouTube", name: "Another source" } ],
                                  // optional: extra sources for a tip that several places mention
-  image: "assets/example.svg",   // optional: local image or direct image URL
-  imageMobile: "assets/example-mobile.svg", // optional: narrower version for small screens
-  imageAlt: "What the image explains" // optional: describe useful information in the image
+  image: "assets/example.svg",   // facultatif : fichier local ou URL http(s)
+  imageMobile: "assets/example-mobile.svg", // facultatif : version plus étroite
+  imageAlt: "Ce que l'image explique" // facultatif : information utile visible
 },
 ```
 
 The page shows `summary` (or `title`) as the one-line takeaway and keeps `text` behind a disclosure. “Ma liste” checks are stored in this browser only (`localStorage`), not in the file.
 In `text`, fenced code blocks (three backticks), inline backticks, and lines beginning with macro commands such as `/cast` get a copy button. The renderer creates DOM text nodes instead of interpreting submitted HTML.
-If an image explains a step, include the same key information in `text` and provide `imageAlt`. Decorative images can omit `imageAlt`.
+
+Le champ `image` est facultatif. Un chemin local (`assets/…`) ou une URL `http`/`https` s'affiche dans le détail de l'astuce ; un clic l'ouvre en grand. `imageMobile` sert sous 700 px. Si l'image porte une information, répète-la dans `text` et remplis `imageAlt`. Une image seulement décorative peut omettre `imageAlt`.
 
 Remember the comma between blocks. Always link where you found the tip.
 New category? Add it to `window.CATEGORIES` at the bottom of `tips.js`.
@@ -56,10 +57,12 @@ L'approbation se fait dans la feuille : <https://docs.google.com/spreadsheets/d/
 
 Tape `yes` dans la colonne **Approved** (actuellement colonne I). `y`, `true`, `x` et `1` comptent aussi. Le site lit le CSV publié et ajoute ces lignes à la liste. Google peut mettre quelques minutes à republier le CSV. Si le CSV ne charge pas, les astuces de `tips.js` s'affichent quand même. Les astuces de la communauté restent dans la langue où elles ont été écrites. Les catégories du formulaire doivent rester exactement : `Before launch / settings & UI`, `Race & class picks`, `Leveling route & questing`, `Professions & gold`, `Group play & dungeons`, `Addons`, `Mistakes to avoid`.
 
-## Images envoyées avec les astuces
+## Images
 
-Le champ **Image** du Google Form est un champ texte pour une URL. Le site envoie le fichier choisi vers le preset Cloudinary `wowforevertips` du cloud `xj5obs3e`, puis place l'URL obtenue dans ce champ. Ces deux valeurs sont publiques ; ne mets jamais de clé secrète dans le site.
+Les astuces de `tips.js` acceptent un champ facultatif `image` (voir plus haut). Les astuces proposées via le formulaire peuvent aussi en avoir une.
 
-Le CSV public est celui de l'onglet **Approved only**. L'onglet **Form Responses 1** reste privé ; ne le publie pas. Le formulaire vérifie JPG, PNG et WebP ainsi que la limite de 5 Mo dans le navigateur. Cloudinary ne permet pas de limite de taille par preset ; une limite stricte côté serveur nécessiterait un endpoint d'envoi côté serveur.
+**Ajouter une image** sur `submit.html` est facultatif : fichier, glisser-déposer ou collage. Le navigateur refuse ce qui n'est pas une image et ce qui dépasse 10 Mo. Une image plus large que 1600 px est réduite en JPEG (qualité 0,85) avant l'envoi. Le fichier part vers ImgBB, puis l'URL obtenue est écrite dans la question facultative **Image** du Google Form. La clé ImgBB et les identifiants de champs sont regroupés dans `community.js`.
 
-L'image est hébergée publiquement dès son téléversement, avant l'approbation de l'astuce. Une image envoyée sans astuce approuvée restera sur Cloudinary jusqu'à sa suppression manuelle.
+Le CSV publié est lu **par nom de colonne** (casse ignorée, espaces retirés), pas par position. La colonne **Image** fournit l'adresse ; seules les URL `http` et `https` sont gardées. **Approved** reste la colonne d'approbation (actuellement la colonne I, après la colonne vide « Column 6 »). L'image est publique dès l'envoi vers ImgBB, avant l'approbation de l'astuce.
+
+Le CSV public est celui de l'onglet **Approved only**. L'onglet **Form Responses 1** reste privé ; ne le publie pas.
