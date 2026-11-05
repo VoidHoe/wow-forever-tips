@@ -29,8 +29,13 @@
     image: "entry.1827524123"
   };
 
-  // shortcut: an exposed unsigned preset can be abused, add a server upload endpoint if abuse appears.
-  var imageUpload = { cloudName: "xj5obs3e", uploadPreset: "wowforevertips" };
+  // Client-side ImgBB key: the static site has nowhere else to keep it.
+  // Images are public as soon as they are uploaded, before a tip is approved.
+  var IMGBB_UPLOAD = "https://api.imgbb.com/1/upload";
+  var IMGBB_KEY = "505b06e4e5aadabee8bd35b90d8146f4";
+  var IMAGE_MAX_BYTES = 10 * 1024 * 1024;
+  var IMAGE_MAX_WIDTH = 1600;
+  var IMAGE_JPEG_QUALITY = 0.85;
 
   function categoryById(id) {
     for (var i = 0; i < categories.length; i++) {
@@ -77,24 +82,30 @@
   function headerIndex(header) {
     var idx = {};
     header.forEach(function (cell, i) {
-      idx[String(cell || "").trim().toLowerCase()] = i;
+      var key = String(cell || "").trim().toLowerCase();
+      if (!key || idx[key] != null) return;
+      idx[key] = i;
     });
-    function find(name) {
-      if (idx[name] != null) return idx[name];
+    function exact(name) {
+      return idx[name] != null ? idx[name] : -1;
+    }
+    function sourceCol() {
+      var known = exact("source link (video, reddit, x...)");
+      if (known >= 0) return known;
       var keys = Object.keys(idx);
       for (var i = 0; i < keys.length; i++) {
-        if (keys[i].indexOf(name) === 0) return idx[keys[i]];
+        if (keys[i].indexOf("source link") === 0) return idx[keys[i]];
       }
       return -1;
     }
     return {
-      title: find("tip title"),
-      category: find("category"),
-      details: find("details"),
-      source: find("source link"),
-      name: find("your name"),
-      image: find("image"),
-      approved: find("approved")
+      title: exact("tip title"),
+      category: exact("category"),
+      details: exact("details"),
+      source: sourceCol(),
+      name: exact("your name"),
+      image: exact("image"),
+      approved: exact("approved")
     };
   }
 
@@ -122,6 +133,25 @@
     } catch (e) {
       return "";
     }
+  }
+
+  // http(s) URLs, or a local asset path used by curated tips. Nothing else.
+  function safeImageSrc(value) {
+    var raw = String(value || "").trim();
+    if (!raw || /[\u0000-\u001f\u007f]/.test(raw)) return "";
+    if (/^[a-z][a-z0-9+.-]*:/i.test(raw)) return safeHttpUrl(raw);
+    if (raw.indexOf("//") === 0 || raw.indexOf("\\") !== -1 || raw.indexOf("..") !== -1) return "";
+    if (!/^[A-Za-z0-9_./-]+$/.test(raw)) return "";
+    return raw;
+  }
+
+  function imageExportSize(width, height, maxWidth) {
+    var max = maxWidth || IMAGE_MAX_WIDTH;
+    var w = Math.round(Number(width) || 0);
+    var h = Math.round(Number(height) || 0);
+    if (w < 1 || h < 1) return null;
+    if (w <= max) return { width: w, height: h, scaled: false };
+    return { width: max, height: Math.max(1, Math.round(h * (max / w))), scaled: true };
   }
 
   function sourceFromUrl(url) {
@@ -188,7 +218,7 @@
       };
       if (by) tip.by = by;
       if (url) tip.source = sourceFromUrl(url);
-      if (image && image.slice(0, 8) === "https://") tip.image = image;
+      if (image) tip.image = image;
       out.push(tip);
     }
     return out;
@@ -201,7 +231,8 @@
     body.set(entries.details, fields.details);
     if (fields.source) body.set(entries.source, fields.source);
     if (fields.name) body.set(entries.name, fields.name);
-    if (fields.image) body.set(entries.image, fields.image);
+    var imageUrl = safeHttpUrl(fields.image);
+    if (imageUrl) body.set(entries.image, imageUrl);
     var fetcher = fetchFn || root.fetch;
     return fetcher(FORM_BASE + "/formResponse", {
       method: "POST",
@@ -210,20 +241,21 @@
     });
   }
 
-  function uploadImage(file, fetchFn) {
-    if (!imageUpload.cloudName || !imageUpload.uploadPreset) return Promise.reject(new Error("Image upload is not configured"));
+  function uploadImage(image, fetchFn) {
+    if (!IMGBB_KEY) return Promise.reject(new Error("Image upload is not configured"));
+    if (image == null || image === "") return Promise.reject(new Error("Missing image"));
     var body = new FormData();
-    body.set("file", file);
-    body.set("upload_preset", imageUpload.uploadPreset);
-    return (fetchFn || root.fetch)("https://api.cloudinary.com/v1_1/" + encodeURIComponent(imageUpload.cloudName) + "/image/upload", {
+    body.set("image", image);
+    return (fetchFn || root.fetch)(IMGBB_UPLOAD + "?key=" + encodeURIComponent(IMGBB_KEY), {
       method: "POST",
       body: body
     }).then(function (res) {
-      if (!res.ok) throw new Error("Image upload failed");
+      if (!res || !res.ok || typeof res.json !== "function") throw new Error("Image upload failed");
       return res.json();
     }).then(function (data) {
-      var url = safeHttpUrl(data && data.secure_url);
-      if (!url || url.indexOf("https://res.cloudinary.com/" + imageUpload.cloudName + "/image/upload/") !== 0) throw new Error("Invalid image URL");
+      var payload = data && data.data;
+      var url = safeHttpUrl(payload && payload.url) || safeHttpUrl(payload && payload.display_url);
+      if (!url) throw new Error("Invalid image URL");
       return url;
     });
   }
@@ -231,7 +263,10 @@
   root.COMMUNITY = {
     categories: categories,
     entries: entries,
-    imageUpload: imageUpload,
+    imgbb: { key: IMGBB_KEY, uploadUrl: IMGBB_UPLOAD },
+    imageMaxBytes: IMAGE_MAX_BYTES,
+    imageMaxWidth: IMAGE_MAX_WIDTH,
+    imageJpegQuality: IMAGE_JPEG_QUALITY,
     formView: FORM_BASE + "/viewform",
     formResponse: FORM_BASE + "/formResponse",
     csvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQwkjMPOnMWkdVyg6Rz1fQ6weZaTTDUMq6S-nuwNrBRRB_wi8iVoZaKSin_LDv4cwNLgE9C0oD1DLVA/pub?gid=1603425361&single=true&output=csv",
@@ -243,6 +278,8 @@
     submitTip: submitTip,
     uploadImage: uploadImage,
     safeHttpUrl: safeHttpUrl,
+    safeImageSrc: safeImageSrc,
+    imageExportSize: imageExportSize,
     isApproved: isApproved
   };
 })(typeof window !== "undefined" ? window : globalThis);

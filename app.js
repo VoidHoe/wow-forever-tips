@@ -33,7 +33,8 @@
     professions: '<path d="M12 3v18"/><path d="M16 7H9.5a3.5 3.5 0 000 7H14a3.5 3.5 0 010 7H7"/>',
     group: '<path d="M16 19.5v-1.2a3 3 0 00-3-3H7a3 3 0 00-3 3v1.2"/><circle cx="10" cy="8" r="2.6"/><path d="M20 19.5v-1a2.6 2.6 0 00-2-2.5"/><circle cx="17" cy="8.2" r="2"/>',
     addons: '<path d="M9 4h5l1 2h3a1 1 0 011 1v11a1 1 0 01-1 1H6a1 1 0 01-1-1V7a1 1 0 011-1h3z"/><path d="M9 12h6M9 16h4"/>',
-    mistakes: '<path d="M12 4l8 14H4z"/><path d="M12 10v4M12 16.5h.01"/>'
+    mistakes: '<path d="M12 4l8 14H4z"/><path d="M12 10v4M12 16.5h.01"/>',
+    image: '<rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="10" r="1.4"/><path d="M20 16l-4.2-3.4a1 1 0 00-1.3.05L8 18"/>'
   };
 
   function setText(id, text) {
@@ -139,6 +140,49 @@
     });
     if (orderLabel) orderLabel.hidden = !anyCat;
   }
+
+  function safeTipImage(value) {
+    var api = window.COMMUNITY;
+    if (!api || typeof api.safeImageSrc !== "function") return "";
+    return api.safeImageSrc(value);
+  }
+
+  var lightbox = el("div", "lightbox");
+  lightbox.hidden = true;
+  lightbox.setAttribute("role", "dialog");
+  lightbox.setAttribute("aria-modal", "true");
+  lightbox.setAttribute("aria-label", "Image en grand");
+  var lightboxClose = el("button", "lightbox-close", "Fermer");
+  lightboxClose.type = "button";
+  lightboxClose.setAttribute("aria-label", "Fermer l'image");
+  var lightboxImg = document.createElement("img");
+  lightboxImg.className = "lightbox-img";
+  lightboxImg.alt = "";
+  lightbox.appendChild(lightboxClose);
+  lightbox.appendChild(lightboxImg);
+  document.body.appendChild(lightbox);
+  var lightboxReturn = null;
+
+  function closeLightbox() {
+    if (lightbox.hidden) return;
+    lightbox.hidden = true;
+    lightboxImg.removeAttribute("src");
+    lightboxImg.alt = "";
+    document.body.classList.remove("has-lightbox");
+    var back = lightboxReturn;
+    lightboxReturn = null;
+    if (back && back.focus) back.focus();
+  }
+  function openLightbox(src, alt, returnEl) {
+    if (!src) return;
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || "Image de l'astuce";
+    lightbox.hidden = false;
+    document.body.classList.add("has-lightbox");
+    lightboxReturn = returnEl || document.activeElement;
+    lightboxClose.focus();
+  }
+  lightbox.addEventListener("click", function () { closeLightbox(); });
 
   function sourceLink(src) {
     if (!src || !src.url || !/^https?:\/\//i.test(src.url)) return null;
@@ -282,6 +326,13 @@
     if (t.badge === "beta") badges.appendChild(el("span", "badge beta", "Bêta"));
     if (t.badge === "classic") badges.appendChild(el("span", "badge classic", "Ère Classique"));
     if (t.community) badges.appendChild(el("span", "badge community", "Communauté"));
+    if (safeTipImage(t.image)) {
+      var hint = el("span", "img-hint");
+      hint.title = "Image";
+      hint.appendChild(iconEl("image"));
+      hint.appendChild(el("span", "sr", "Cette astuce contient une image"));
+      badges.appendChild(hint);
+    }
     if (t.by) badges.appendChild(el("span", "byline", "par " + t.by));
     sum.appendChild(badges);
     sum.appendChild(el("span", "chev"));
@@ -290,21 +341,29 @@
 
     var detail = el("div", "detail");
     detail.appendChild(tipBody(t.text));
-    if (t.image) {
+    var imageSrc = safeTipImage(t.image);
+    if (imageSrc) {
+      var alt = t.imageAlt ? String(t.imageAlt) : "";
+      var open = el("button", "tip-image-open");
+      open.type = "button";
+      open.setAttribute("aria-label", alt ? "Agrandir l'image : " + alt : "Agrandir l'image");
       var picture = el("picture", "tip-picture");
-      if (t.imageMobile) {
+      var mobileSrc = safeTipImage(t.imageMobile);
+      if (mobileSrc && mobileSrc.indexOf(",") === -1 && /\s/.test(mobileSrc) === false) {
         var mobile = document.createElement("source");
         mobile.media = "(max-width: 700px)";
-        mobile.srcset = t.imageMobile;
+        mobile.srcset = mobileSrc;
         picture.appendChild(mobile);
       }
       var img = el("img", "tip-image");
-      img.src = t.image;
-      img.alt = t.imageAlt || "";
+      img.src = imageSrc;
+      img.alt = alt;
       img.loading = "lazy";
       img.decoding = "async";
       picture.appendChild(img);
-      detail.appendChild(picture);
+      open.appendChild(picture);
+      open.addEventListener("click", function () { openLightbox(imageSrc, alt, open); });
+      detail.appendChild(open);
     }
     var list = el("ul", "sources");
     [t.source].concat(t.more || []).forEach(function (src) {
@@ -477,6 +536,11 @@
   document.getElementById("reset").addEventListener("click", resetFilters);
   document.getElementById("clear").addEventListener("click", resetFilters);
   document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !lightbox.hidden) {
+      e.preventDefault();
+      closeLightbox();
+      return;
+    }
     var tag = document.activeElement && document.activeElement.tagName;
     if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA" && !e.metaKey && !e.ctrlKey && !e.altKey) {
       e.preventDefault();

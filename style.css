@@ -68,6 +68,50 @@ footer .badge { vertical-align: 1px; }
 .field input[type="text"], .field input[type="url"], .field textarea { width: 100%; padding: 12px; border: 1px solid var(--line-strong); border-radius: 8px; background: #0d111a; color: var(--ink); font: 16px/1.45 var(--sans); }
 .field textarea { min-height: 120px; resize: vertical; }
 .field input[type="file"] { max-width: 100%; color: var(--body); }
+.dropzone {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 112px;
+  padding: 18px 16px;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: 10px;
+  background: #0d111a;
+  text-align: center;
+}
+.dropzone:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+.dropzone.is-dragover { border-color: var(--gold); background: #241f16; }
+.dropzone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.dropzone-copy { display: grid; gap: 4px; margin: 0; pointer-events: none; }
+.dropzone-copy strong { font-size: 1rem; }
+.dropzone-copy span { color: var(--muted); font-size: .86rem; }
+.image-preview { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 10px; }
+.image-preview img {
+  width: auto;
+  height: auto;
+  max-width: min(100%, 320px);
+  max-height: 180px;
+  object-fit: contain;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: #0b0d12;
+}
+.image-preview-actions { display: grid; gap: 6px; justify-items: start; }
+.image-preview-actions .hint { margin: 0; }
+.image-preview .btn { min-height: 40px; }
+.form-error .btn { display: flex; width: fit-content; margin-top: 10px; }
+@media (max-width: 700px) {
+  .image-preview { align-items: flex-start; }
+  .image-preview img { max-width: 100%; max-height: 160px; }
+}
 .field input[aria-invalid="true"], .field textarea[aria-invalid="true"] { border-color: #e7a090; }
 .hint { margin: 6px 0 0; color: var(--muted); font-size: .84rem; }
 .field-error, .form-error { margin: 6px 0 0; color: #f0c2b4; font-size: .9rem; }

@@ -42,7 +42,43 @@
 .home details[open] .chev { transform: rotate(45deg); }
 .home .sources { display: flex; flex-direction: column; gap: 6px; padding: 0; margin: 0; list-style: none; }
 .home .src { display: inline-flex; align-items: baseline; gap: 8px; color: var(--gold-2); font-size: .85rem; overflow-wrap: anywhere; text-underline-offset: 2px; }
-.home .tip-image { display: block; max-width: 100%; border-radius: 8px; }
+.home .tip-image { display: block; width: auto; height: auto; max-width: 100%; max-height: 420px; object-fit: contain; border-radius: 12px; background: #0c1018; }
+.home .img-hint { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 1px solid #5a4e32; border-radius: 5px; color: var(--gold-2); }
+.home .img-hint .ico { width: 13px; height: 13px; }
+.home .tip-image-open { display: block; width: fit-content; max-width: 100%; margin: 4px 0 13px; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
+.home .tip-image-open:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 64px 20px 24px;
+  background: rgba(5, 7, 12, .9);
+}
+.lightbox-img {
+  max-width: min(96vw, 1400px);
+  max-height: calc(100vh - 96px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, .45);
+}
+.lightbox-close {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: #171c28;
+  color: var(--ink);
+  font: 750 .9rem var(--sans);
+  cursor: pointer;
+}
+body.has-lightbox { overflow: hidden; }
 .home .empty { padding: 30px 12px; text-align: center; }
 .home .empty p { margin: 0 0 12px; }
 .home .app-bar {
@@ -207,8 +243,8 @@
 .home .badge.community { background: #254438; }
 .home .detail { max-width: 75ch; margin-top: 12px; padding: 13px 8px 2px 0; border-top: 1px solid var(--line); }
 .home .detail .text { margin: 0 0 11px; color: var(--body); line-height: 1.6; white-space: pre-wrap; }
-.home .tip-picture { display: block; max-width: 720px; margin: 4px 0 13px; }
-.home .tip-picture .tip-image { width: 100%; height: auto; max-height: none; margin: 0; border: 1px solid var(--line); }
+.home .tip-picture { display: block; max-width: 720px; }
+.home .tip-picture .tip-image { margin: 0; border: 1px solid var(--line); }
 .home .detail-label { color: #adbad0; }
 .home .src { color: var(--gold-2); }
 .home .group { margin-top: 24px; }
